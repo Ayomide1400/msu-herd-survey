@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>R&amp;D Classification Framework — Policy Reference | Morgan State ORA</title>
+<meta name="description" content="Determining R&D Activity in Sponsored Awards: a practical framework for HERD Survey classification, referenced alongside the PI Handbook.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230b2545'/%3E%3Cpath d='M30 78V22M70 78V22M30 34h40M30 50h40M30 66h40' stroke='%23b5601e' stroke-width='7' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0b2545; --navy-2:#123a6b; --orange:#b5601e; --orange-2:#c97a2f; --orange-soft:#f2ede5;
+    --bg:#f7f7f5; --card:#ffffff; --ink:#1e2126; --muted:#5a6169; --line:#dfe1e3;
+    --radius:8px; --font-head:'Source Serif 4', Georgia, serif; --font-body:'Public Sans', -apple-system, sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#12151a; --card:#191d23; --ink:#e6e8eb; --muted:#98a0a8; --line:#2a2e35; --navy:#16345e; --navy-2:#1e4c8a; --orange-soft:#28221b; --orange-2:#d99a52; }
+  }
+  :root[data-theme="dark"]{ --bg:#12151a; --card:#191d23; --ink:#e6e8eb; --muted:#98a0a8; --line:#2a2e35; --navy:#16345e; --navy-2:#1e4c8a; --orange-soft:#28221b; --orange-2:#d99a52; }
+  :root[data-theme="light"]{ --bg:#f7f7f5; --card:#ffffff; --ink:#1e2126; --muted:#5a6169; --line:#dfe1e3; --navy:#0b2545; --navy-2:#123a6b; --orange-soft:#f2ede5; --orange-2:#c97a2f; }
+  *{ box-sizing:border-box; }
+  body{ margin:0; font-family:var(--font-body); background:var(--bg); color:var(--ink); line-height:1.7; }
+  h1,h2,h3,h4{ font-family:var(--font-head); font-weight:600; line-height:1.3; }
+  a{ color:var(--navy-2); }
+  :root[data-theme="dark"] a{ color:var(--orange-2); } @media (prefers-color-scheme: dark){ a{ color:var(--orange-2); } }
+
+  .doc-header{ background:var(--navy); color:#fff; padding:2.5rem 0 2rem; }
+  .doc-header .wrap{ max-width:760px; margin:0 auto; padding:0 1.5rem; }
+  .doc-header .part{ text-transform:uppercase; letter-spacing:.08em; font-size:.75rem; color:#a9b8d2; font-weight:600; }
+  .doc-header h1{ font-size:1.9rem; margin:.5rem 0 .4rem; color:#fff; }
+  .doc-header .sub{ color:#c7d3e6; font-size:1rem; }
+  .doc-header .backlink{ display:inline-block; margin-top:1.5rem; font-size:.85rem; color:#a9b8d2; }
+
+  .toolbar{ background:var(--card); border-bottom:1px solid var(--line); position:sticky; top:0; }
+  .toolbar .wrap{ max-width:760px; margin:0 auto; padding:.75rem 1.5rem; display:flex; gap:1rem; align-items:center; justify-content:space-between; flex-wrap:wrap; }
+  .toolbar .meta{ font-size:.8rem; color:var(--muted); }
+  .dl-btn{ display:inline-flex; align-items:center; gap:.4rem; background:var(--orange); color:#fff; text-decoration:none; font-size:.85rem; font-weight:600; padding:.5rem 1rem; border-radius:6px; }
+
+  main.wrap{ max-width:760px; margin:0 auto; padding:2.5rem 1.5rem 5rem; }
+
+  nav.doc-toc{ background:var(--orange-soft); border:1px solid var(--line); border-radius:var(--radius); padding:1.25rem 1.5rem; margin-bottom:2.5rem; }
+  nav.doc-toc h2{ font-size:.95rem; margin:0 0 .75rem; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); font-family:var(--font-body); font-weight:700; }
+  nav.doc-toc ol{ margin:0; padding-left:1.2rem; columns:2; column-gap:2rem; font-size:.88rem; }
+  nav.doc-toc li{ margin:.35rem 0; break-inside:avoid; }
+  nav.doc-toc a{ text-decoration:none; }
+  nav.doc-toc a:hover{ text-decoration:underline; }
+  @media (max-width:600px){ nav.doc-toc ol{ columns:1; } }
+
+  section.doc-section{ margin-bottom:2.75rem; scroll-margin-top:4.5rem; }
+  section.doc-section h2{ font-size:1.35rem; border-bottom:2px solid var(--orange-soft); padding-bottom:.5rem; margin-bottom:1rem; }
+  section.doc-section h3{ font-size:1.05rem; margin:1.5rem 0 .4rem; color:var(--orange); }
+  section.doc-section h4{ font-size:.95rem; font-style:italic; margin:1.1rem 0 .3rem; color:var(--muted); font-family:var(--font-body); font-weight:600; }
+  section.doc-section p{ margin:0 0 1rem; }
+  section.doc-section ul{ padding-left:1.3rem; }
+  section.doc-section li{ margin:.4rem 0; }
+  .example{ background:var(--card); border-left:3px solid var(--orange); padding:.9rem 1.2rem; border-radius:0 6px 6px 0; font-size:.93rem; margin:1rem 0; }
+  .note{ background:var(--orange-soft); border:1px solid var(--line); border-radius:var(--radius); padding:1rem 1.3rem; font-size:.88rem; color:var(--muted); margin:1.25rem 0; }
+  table.level-table{ width:100%; border-collapse:collapse; margin:1.25rem 0; font-size:.92rem; }
+  table.level-table th, table.level-table td{ border:1px solid var(--line); padding:.6rem .9rem; text-align:left; }
+  table.level-table th{ background:var(--orange-soft); font-family:var(--font-head); font-weight:600; }
+  .quote{ font-style:italic; border-left:3px solid var(--line); padding-left:1rem; color:var(--muted); }
+  .authority{ font-size:.8rem; color:var(--muted); margin-top:.5rem; }
+
+  footer.doc-footer{ border-top:1px solid var(--line); padding:2.5rem 1.5rem; text-align:center; color:var(--muted); font-size:.85rem; }
+</style>
+</head>
+<body>
+
+<header class="doc-header">
+  <div class="wrap">
+    <div class="part">Office of Research Administration — Policy Reference</div>
+    <h1>Determining R&amp;D Activity in Sponsored Awards</h1>
+    <div class="sub">A Practical Framework for HERD Survey Classification</div>
+    <a href="index.html" class="backlink">← Back to the interactive classifier</a>
+  </div>
+</header>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="meta">Prepared by Ayomide Ajibola, MBA · Reviewed by Rebecca Steiner · Office of Research Administration</span>
+    <a class="dl-btn" href="assets/RD-Classification-Framework.docx" download>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13m0 0l-5-5m5 5l5-5M4 21h16"/></svg>
+      Download (.docx)
+    </a>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <nav class="doc-toc" aria-label="Table of contents">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#summary">Executive Summary</a></li>
+      <li><a href="#intro">1. Introduction</a></li>
+      <li><a href="#defining">2. Defining R&amp;D</a></li>
+      <li><a href="#why">3. Why Classification Matters</a></li>
+      <li><a href="#framework">4. The Five-Level Framework</a></li>
+      <li><a href="#process">5. The Determination Process</a></li>
+      <li><a href="#herd">6. HERD Survey Requirements</a></li>
+      <li><a href="#others">7. What Other Institutions Do</a></li>
+      <li><a href="#examples">8. Examples</a></li>
+      <li><a href="#practices">9. Best Practices</a></li>
+      <li><a href="#conclusion">10. Conclusion</a></li>
+    </ol>
+  </nav>
+
+  <section class="doc-section" id="summary">
+    <h2>Executive Summary</h2>
+    <p>The Higher Education Research and Development (HERD) Survey, administered annually by the National Science Foundation (NSF), is one of the most important mechanisms through which institutions of higher education report their research and development (R&amp;D) expenditure activity to the federal government. For Morgan State University, accurate HERD reporting is not just a compliance exercise — it is a direct measure of research capacity, competitive standing, and eligibility for federal funding programs.</p>
+    <p>Despite its significance, there has historically been no standardized, document-based methodology for determining what counts as R&amp;D activity within sponsored award portfolios. Most institutions rely on informal judgment, cursory sponsor identification, or simply the adoption of a prior year's classification. This creates inconsistency across reporting years, potential misclassification of awards, and limited defensibility in the event of audit or inquiry.</p>
+    <p>This document presents a five-level hierarchical framework developed by Morgan State University's Office of Research Administration (ORA) to bring rigor, consistency, and transparency to HERD R&amp;D classification. The framework — built around a hierarchy of evidence that begins with the Notice of Award (NOA) and progresses through Funding Opportunity Announcements (FOA), federal program catalog numbers, internal supporting documentation, and institutional records — provides all research staff with a clear, step-by-step process for making and defending R&amp;D classification decisions.</p>
+    <p>The framework was developed and validated through a comprehensive review of active and recently closed sponsored awards at Morgan State University. It also draws on NSF HERD Survey guidelines, the Frascati Manual published by the Organisation for Economic Co-operation and Development (OECD), federal program classification numbers (ALN/CFDA), and Morgan State's own PI Handbook (Part 5: Policies and Guidelines) as foundational sources.</p>
+    <p>The end product is a replicable institutional tool — one that Morgan State can apply consistently year over year, and one that peer HBCU institutions and broader research administration offices can adapt for their own portfolios.</p>
+  </section>
+
+  <section class="doc-section" id="intro">
+    <h2>1. Introduction</h2>
+    <h3>1.1 Background and Context</h3>
+    <p>This guide was developed at Morgan State University and reflects classification challenges common to research-active institutions. Morgan State participates in the NSF HERD Survey annually to report its research and development (R&amp;D) expenditures. These reported figures have direct implications for federal funding allocations, institutional rankings, and the university's standing within the broader research enterprise.</p>
+    <p>The HERD Survey requires institutions to categorize their sponsored activity as R&amp;D or non-R&amp;D across three activity types: Basic Research, Applied Research, and Experimental Development. While NSF provides definitional guidance, the actual classification of individual awards is left to the discretion of each institution — different institutions place this responsibility in different offices.</p>
+    <p>In undertaking a systematic review of the HERD grant listing provided by Morgan State's Office of Research Administration (ORA), the review revealed inconsistencies between the existing classification and what could be supported by documentary evidence at the award level: some grants classified as R&amp;D lacked any supporting documentation to confirm research activity, while others classified as non-R&amp;D appeared — based on their funding source, purpose, and structure — to meet the NSF definition of R&amp;D.</p>
+    <p>This gap between classification and evidence motivated the development of a formal, document-based determination framework. The goal was not to simply reclassify awards, but to establish a transparent, consistent, and defensible methodology that Morgan State can apply going forward.</p>
+    <h3>1.2 Purpose</h3>
+    <ul>
+      <li>To define what R&amp;D means in the context of HERD Survey reporting and how that definition applies to sponsored awards.</li>
+      <li>To present a step-by-step, five-level classification framework that any research administrator can apply to any sponsored award.</li>
+      <li>To document the sources, evidence types, and reasoning that support each classification level.</li>
+      <li>To serve as a reference for peer institutions seeking to build or improve their own HERD classification process.</li>
+      <li>To provide a repository of key external references, federal guidelines, and institutional context that informed the framework.</li>
+    </ul>
+  </section>
+
+  <section class="doc-section" id="defining">
+    <h2>2. Defining R&amp;D: The Regulatory Foundation</h2>
+    <h3>2.1 The NSF HERD Survey Definition</h3>
+    <p>The NSF HERD Survey follows the definitions established in the Frascati Manual (OECD, 2015), the internationally recognized standard for measuring R&amp;D produced by the Organisation for Economic Co-operation and Development (OECD). Under this framework, Research and Development (R&amp;D) is defined as:</p>
+    <p class="quote">"Creative and systematic work undertaken to increase the stock of knowledge — including knowledge of humankind, culture, and society — and to devise new applications of available knowledge."</p>
+    <p class="authority">— Frascati Manual, OECD (2015)</p>
+    <p>NSF operationalizes this for higher education through three activity types:</p>
+    <ul>
+      <li><strong>Basic Research</strong> — pursuing new knowledge with no specific application in mind.</li>
+      <li><strong>Applied Research</strong> — investigation aimed at a specific practical objective.</li>
+      <li><strong>Experimental Development</strong> — using research knowledge to develop or improve a product or process.</li>
+    </ul>
+    <p>To qualify as R&amp;D, an activity must be: novel, in that it seeks knowledge or outcomes not already available; creative, in that it involves original concepts and hypotheses; uncertain in outcome; systematic, in that it follows a planned methodology; and transferable or reproducible, in that its results can be communicated and validated.</p>
+    <p>The key test is whether the award funds the generation of new knowledge. This distinguishes R&amp;D from education, training, service delivery, technical assistance, and infrastructure support — all of which may be valuable activities funded through sponsored awards but are not, by definition, R&amp;D.</p>
+    <h3>2.2 What Is NOT R&amp;D</h3>
+    <p>The following categories of sponsored activity are generally not classified as R&amp;D, even when funded by federal agencies known primarily for research funding:</p>
+    <ul>
+      <li>Workforce development and training programs, including STEM education pipelines, apprenticeships, and pre-college outreach;</li>
+      <li>Service delivery contracts, including public health program delivery, transportation services, and social services coordination;</li>
+      <li>Equipment and infrastructure grants, unless the equipment acquisition directly enables and is integral to a research project;</li>
+      <li>Educational curriculum development, unless the project itself is studying the educational intervention as a research object;</li>
+      <li>Institutional capacity-building — general operational or administrative grants without a defined research objective; and</li>
+      <li>Conference and dissemination grants, unless the conference includes substantive research presentations and is classified as such by the funding agency (e.g., NSF conference grants).</li>
+    </ul>
+    <p>A common challenge is that many grants blend activities — a project may include both research components and training or service components. In such cases, the primary purpose of the award, as stated in the NOA and funding opportunity, governs classification.</p>
+    <h3>2.3 The Morgan State University Institutional Definition</h3>
+    <p>Morgan State University's PI Handbook (Part 5, Definition D under the Conflicts of Interest policy) defines "research or development" as:</p>
+    <p class="quote">"Basic or applied research or development, and includes the development or marketing of university-owned technology, the acquisition of services of an official or employee by an entity for research and development purposes, or participation in State economic development programs."</p>
+    <p class="authority">— Morgan State University PI Handbook, Part 5 (2024, p. 6)</p>
+    <p>This institutional definition is consistent with NSF and Frascati standards and further anchors the classification framework within existing Morgan State policy. Importantly, it extends to technology development and state economic development programs, reflecting the full breadth of sponsored activity that may constitute R&amp;D at Morgan State.</p>
+  </section>
+
+  <section class="doc-section" id="why">
+    <h2>3. Why R&amp;D Classification Matters</h2>
+    <h3>3.1 Institutional Metrics</h3>
+    <h4>Federal Funding Eligibility and Allocations</h4>
+    <p>The National Institutes of Health (NIH), the National Science Foundation (NSF), and other federal agencies use HERD data in their program allocation models. Institutions that report higher R&amp;D expenditures can access broader pools of funding, including certain set-aside programs and capacity-building grants — some specifically designed for institutions with demonstrated research infrastructure, and others, such as NSF's GRANTED program, designed for institutions demonstrating that they do not yet have that infrastructure.</p>
+    <h4>Institutional Rankings and Visibility</h4>
+    <p>HERD data feeds directly into national research rankings, including NSF's own R&amp;D expenditure rankings and Carnegie Classification® criteria for research universities. For Morgan State, maintaining and improving its Carnegie classification depends in part on accurately capturing and reporting the full scope of R&amp;D activity across the institution.</p>
+    <h4>Facilities and Administrative (F&amp;A) Cost Recovery</h4>
+    <p>R&amp;D expenditure is a critical input in the calculation of Facilities and Administrative (F&amp;A) cost rates. Misclassifying R&amp;D activity as non-R&amp;D can reduce the base on which F&amp;A costs are calculated and recovered, directly affecting the institution's ability to cover research infrastructure costs.</p>
+    <h4>Peer Benchmarking and Competitive Positioning</h4>
+    <p>HERD data enables Morgan State to benchmark itself against peer institutions. Inaccurate reporting — in either direction — distorts the institution's competitive picture and can affect strategic planning, grant-seeking, and partnership development.</p>
+    <h4>Audit and Compliance Risk</h4>
+    <p>Because HERD data is tied to federal reporting obligations, misclassification creates compliance risk. A documented, evidence-based classification methodology provides the strongest defense in the event of any inquiry.</p>
+    <h3>3.2 The HBCU and MSI Context</h3>
+    <p>Historically Black Colleges and Universities (HBCUs) and Minority-Serving Institutions (MSIs) often receive a significant proportion of their sponsored funding through community-engaged, service-oriented, and education-focused programs — many funded by agencies that also fund research, creating classification ambiguity. At the same time, these institutions are increasingly active in applied research, STEM workforce development research, and community-based participatory research, all of which may qualify as R&amp;D under the appropriate standards. Building a robust, evidence-based classification framework helps ensure that legitimate R&amp;D activity at Morgan State is captured, counted, and credited.</p>
+  </section>
+
+  <section class="doc-section" id="framework">
+    <h2>4. The Five-Level Classification Framework</h2>
+    <p>The strongest evidence for whether a sponsored award constitutes R&amp;D activity is the award document itself. When the award is clear, classification begins and ends there. When it isn't, the reviewer works systematically down the hierarchy until a supported determination can be made. This approach is <strong>efficient</strong> — reviewers stop at the first level that gives a conclusive answer — and <strong>defensible</strong> — every classification is traceable to a named source that can be produced under audit.</p>
+    <table class="level-table">
+      <tr><th>Level</th><th>Evidence Source</th></tr>
+      <tr><td>L1</td><td>Notice of Award (NOA)</td></tr>
+      <tr><td>L2</td><td>Funding Opportunity Announcement (FOA / RFA)</td></tr>
+      <tr><td>L3</td><td>ALN / CFDA Number</td></tr>
+      <tr><td>L4</td><td>Supporting Documentation (IRF, SOW, LOI, PI statement)</td></tr>
+      <tr><td>L5</td><td>Institutional Record</td></tr>
+    </table>
+    <p style="font-size:.85rem; color:var(--muted)">IRF = Internal Routing Form · SOW = Statement of Work · LOI = Letter of Intent</p>
+    <p>A grant classified at Level 1 has the strongest evidence base; Level 5 has the weakest — not because the classification is wrong, but because the documentation is more indirect. The goal over time is to move grants from Level 5 toward Level 1 and Level 2 as documentation is gathered and filed.</p>
+
+    <h3>4.1 Level 1 — Notice of Award (NOA)</h3>
+    <p>The NOA is the official document issued by the funding agency that formally grants the award, including the project title, period of performance, award amount, and a statement of the project's purpose. Under Uniform Guidance (2 CFR Part 200), a federal NOA is required to include the applicable ALN/CFDA number — and federal agencies are required to directly answer the question <em>"Is this award R&amp;D?"</em> on the NOA itself. NSF, NIH, and NASA notices all include this direct indication, and it is the strongest, most compelling evidence available.</p>
+    <p><strong>How to apply it:</strong> Look first for a direct R&amp;D indicator. Only if none is present should a reviewer read the NOA's purpose language for research-type terms (research, hypothesis, data collection, findings) versus service/training/infrastructure language.</p>
+    <div class="example"><strong>R&amp;D:</strong> An NIH Career Transition Award. The NOA directly indicates the award is R&amp;D, funding structured, hypothesis-driven research training. Classified R&amp;D — Basic Research.</div>
+    <div class="example"><strong>Not R&amp;D:</strong> A state equipment grant. No direct R&amp;D indicator; award language describes a security-infrastructure purchase with no research objective. Classified Not R&amp;D.</div>
+
+    <h3>4.2 Level 2 — Funding Opportunity Announcement (FOA / RFA)</h3>
+    <p>The FOA (NIH: Request for Applications/RFA or Request for Proposals/RFP; NSF and DOE: Funding Opportunity Announcement) is the public solicitation defining the sponsor's research intent before any award is made. The FOA number is usually in the NOA or award file, and can be retrieved from NSF.gov, grants.gov, or the NIH Guide to Grants and Contracts.</p>
+    <div class="example"><strong>R&amp;D:</strong> An NIH training-and-research program. The NOA is inconclusive; the FOA's stated goals include generating new scientific knowledge with a required research design. Classified R&amp;D — Applied Research.</div>
+
+    <h3>4.3 Level 3 — ALN / CFDA Number</h3>
+    <p>The Assistance Listings Number (ALN, formerly CFDA — Catalog of Federal Domestic Assistance) is a five-digit federal program identifier, searchable at <a href="https://sam.gov/fal" target="_blank" rel="noopener">sam.gov/fal</a>. NSF's 47.xxx programs are legislatively defined as R&amp;D; NIH's 93.xxx programs need case-by-case review; DOD's (Department of Defense) 12.xxx programs are largely research-oriented; DHHS's (Department of Health and Human Services) 93.5xx–93.6xx programs tend toward service delivery.</p>
+    <p style="font-size:.9rem; color:var(--muted)"><em>Limitation:</em> program descriptions are written at the program level and may not reflect every individual award funded under them — which is why ALN/CFDA sits below award-level documentation (Levels 1–2) in the hierarchy.</p>
+
+    <h3>4.4 Level 4 — Supporting Documentation</h3>
+    <p>When federal-level sources are inconclusive, internal documents can establish the basis for classification: the Internal Routing Form (IRF), Letter of Intent (LOI), full proposal narrative, Statement of Work (SOW), or a written PI statement. On the IRF, look first at whether "Research &amp; Development" (versus Instruction/Training) is checked — that direct declaration, plus a stated research character and narrative support, governs the classification.</p>
+    <div class="example"><strong>R&amp;D:</strong> A community health research award where the NOA and FOA are inconclusive. The proposal shows community-based research with systematic data collection and an intent to publish. Classified Applied Research.</div>
+
+    <h3>4.5 Level 5 — Institutional Record</h3>
+    <p>Grant management system records, the annual HERD listing, and Restricted Fund Account designations — used only when no stronger documentation is accessible. On a first-pass review, Level 5 will likely account for a large share of the list; that's expected. Label it accurately and treat it as a prioritized list for gathering stronger documentation ahead of the next reporting cycle.</p>
+  </section>
+
+  <section class="doc-section" id="process">
+    <h2>5. The Determination Process</h2>
+    <p>Review the Notice of Award first. If conclusive, document the classification and evidence level. If not, proceed to the FOA, then the ALN/CFDA listing, then supporting documentation, and finally the institutional record — stopping at the first level that gives a clear, defensible answer.</p>
+    <h3>Handling Disagreements</h3>
+    <p>When ORA's classification differs from the previously chosen HERD listing: document the disagreement and the basis for ORA's determination; review who made the original classification and on what basis; where ORA's review has stronger evidence, ORA's classification stands; and where the disagreement is material, escalate to the Director of the Office of Research Administration, or other appropriate leadership, for a final, updated determination. The better-documented classification is what gets recorded for HERD submission.</p>
+  </section>
+
+  <section class="doc-section" id="herd">
+    <h2>6. NSF HERD Survey Requirements</h2>
+    <p>The HERD Survey is run annually through NSF's National Center for Science and Engineering Statistics (NCSES). Participation is mandatory for institutions expending at least $150,000 in separately budgeted R&amp;D in the prior fiscal year — effectively mandatory for Morgan State. The survey collects expenditures by field of research, funding source, activity type (Basic/Applied/Experimental Development), and department.</p>
+    <p>Under the "separately budgeted" standard, only R&amp;D that is separately accounted for counts. Most sponsored awards are cleanly one or the other; for the rare award funding both research and service delivery, the research portion should be estimated.</p>
+  </section>
+
+  <section class="doc-section" id="others">
+    <h2>7. What Other Institutions Are Doing</h2>
+    <p>Most research-intensive institutions — not only HBCUs and MSIs — lack procedural documentation like this for HERD classification. Common shortcuts include sponsor-based classification (all NSF/NIH awards = R&amp;D, blanket), PI self-classification with no independent check, or historical carry-forward without review. Each is fast, and each is prone to error in both directions.</p>
+    <p>NCURA (National Council of University Research Administrators), AURA (Association of University Research Administrators), and SRAI (Society of Research Administrators International) have all published guidance favoring award-level documentation over these shortcuts. This framework — a five-level hierarchy tied to named, retrievable documents — is a concrete methodology in that spirit, and one Morgan State is positioned to share through those channels.</p>
+  </section>
+
+  <section class="doc-section" id="examples">
+    <h2>8. Examples</h2>
+    <div class="note">Examples below use illustrative, non-identifying details. Real award documents contain PI names and financial identifiers that should stay in internal ORA files, not public documentation.</div>
+    <div class="example"><strong>Confirmed R&amp;D:</strong> A biomedical research award from NIH. The NOA directly indicates "Is the Award R&amp;D? Yes," funding hypothesis-driven investigation with a defined research design. Classified R&amp;D — Basic Research, Level 1.</div>
+    <div class="example"><strong>Confirmed Not R&amp;D:</strong> A workforce technology-access award. The NOA directly indicates "R&amp;D Award? No," funding infrastructure deployment with no research objective. Classified Not R&amp;D, Level 1.</div>
+    <p><strong>Borderline cases:</strong> Program evaluation grants are Not R&amp;D unless the evaluation itself is designed to produce generalizable, published knowledge. Community-based research — including awards through programs like the Research Centers in Minority Institutions (RCMI) program — may qualify as Applied Research where the design is systematic and generalizable. NSF conference grants are generally R&amp;D by NSF's own classification; conference grants from other agencies need FOA-level review.</p>
+  </section>
+
+  <section class="doc-section" id="practices">
+    <h2>9. Best Practices</h2>
+    <ul>
+      <li>Always start with the NOA, and look first for a direct R&amp;D indicator before reading into its language.</li>
+      <li>File NOAs electronically in a standardized location, accessible during HERD review.</li>
+      <li>Document every determination — even an obvious one — with its basis.</li>
+      <li>Don't assume based on agency alone: NIH funds training, NSF funds education, DOD funds services.</li>
+      <li>Flag borderline awards early and start a Level 2–4 review before the HERD cycle, not during it.</li>
+      <li>Keep the classification file living — revisit it when an award's scope changes.</li>
+    </ul>
+  </section>
+
+  <section class="doc-section" id="conclusion">
+    <h2>10. Conclusion</h2>
+    <p>The challenge of R&amp;D classification for HERD reporting is not unique to any single institution. This framework addresses it directly, anchoring every decision in a specific, retrievable document rather than institutional memory or agency-based assumption. Looking ahead, the goal is to embed this framework into Morgan State's standard award setup workflow, so classification happens at the start of an award's life, not the end.</p>
+    <p>This guide will be updated as the HERD Survey evolves and Morgan State's sponsored portfolio grows. Feedback from ORA staff, faculty PIs, and peer-institution colleagues is welcome.</p>
+  </section>
+
+</main>
+
+<footer class="doc-footer">
+  <p>Office of Research Administration · Morgan State University</p>
+  <p><a href="index.html">← Back to the interactive classifier</a></p>
+</footer>
+
+</body>
+</html>
