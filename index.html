@@ -549,7 +549,7 @@
         <div class="rung l5" data-rung="5">
           <div class="level">L5</div>
           <div><h3>Institutional Record</h3>
-          <p>Grant management system records, prior HERD listing, fund account type. Last resort — used only when nothing stronger is accessible.</p></div>
+          <p>Office of Research Funds Accounting records, prior HERD listing, fund account type. Last resort — used only when nothing stronger is accessible.</p></div>
         </div>
         <div class="rung l4" data-rung="4">
           <div class="level">L4</div>
@@ -730,7 +730,7 @@
       </div>
 
       <div class="step" data-step="l5" data-rung="5">
-        <p class="wizard-q">Use the institutional record — grant management system, prior HERD listing, or fund account type designation — as a last resort.</p>
+        <p class="wizard-q">Use the institutional record — Office of Research Funds Accounting records, prior HERD listing, or fund account type designation — as a last resort.</p>
         <button class="choice-btn" data-result="unclear" data-level="5" data-basis="Institutional record (last resort)">See result <span class="arrow">→</span></button>
       </div>
 
@@ -764,6 +764,7 @@
       <div class="gloss-item" data-cat="other"><div class="term"><span>OECD</span><span class="cat-tag">Other</span></div><p>Organisation for Economic Co-operation and Development — publisher of the Frascati Manual, the international standard defining R&amp;D.</p></div>
       <div class="gloss-item" data-cat="document"><div class="term"><span>NOA</span><span class="cat-tag">Document</span></div><p>Notice of Award — the official document a sponsor issues to formally grant an award, including its purpose, amount, and terms.</p></div>
       <div class="gloss-item" data-cat="document"><div class="term"><span>FOA / RFA</span><span class="cat-tag">Document</span></div><p>Funding Opportunity Announcement / Request for Applications — the public solicitation under which an award is made (NIH uses RFA/RFP; NSF and DOE use FOA).</p></div>
+      <div class="gloss-item" data-cat="other"><div class="term"><span>Office of Research Funds Accounting</span><span class="cat-tag">Other</span></div><p>Also abbreviated "RFA" — a different meaning from "Request for Applications" above. The internal office whose records form the Level 5 evidence source when nothing stronger is available.</p></div>
       <div class="gloss-item" data-cat="other"><div class="term"><span>ALN / CFDA</span><span class="cat-tag">Other</span></div><p>Assistance Listings Number / Catalog of Federal Domestic Assistance — a five-digit federal program identifier (XX.XXX). Renamed CFDA→ALN in 2021 under the DATA Act. Looked up at sam.gov/fal.</p></div>
       <div class="gloss-item" data-cat="document"><div class="term"><span>IRF</span><span class="cat-tag">Document</span></div><p>Internal Routing Form — the internal form a PI completes when submitting a proposal, including an activity-type declaration.</p></div>
       <div class="gloss-item" data-cat="document"><div class="term"><span>SOW</span><span class="cat-tag">Document</span></div><p>Statement of Work — the section of an award or proposal describing the specific work to be performed.</p></div>
@@ -917,7 +918,7 @@
       resultBox.className = 'result-box nrd';
       resultBox.innerHTML = `<h3><span class="badge nrd">Level 5</span> Institutional Record</h3>
         <p>No stronger documentation was accessible, so classification falls back to institutional
-        record (grant system, prior HERD listing, or fund account type). That's honest, expected for
+        record (Office of Research Funds Accounting records, prior HERD listing, or fund account type). That's honest, expected for
         a first pass, and exactly what Level 5 is for — flag this award to gather stronger
         documentation (NOA, FOA, or IRF) before next year's cycle so it can move up the ladder.</p>`;
       return;

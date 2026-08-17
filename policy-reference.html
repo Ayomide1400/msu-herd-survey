@@ -58,6 +58,7 @@
   .example{ background:var(--card); border-left:3px solid var(--orange); padding:.9rem 1.2rem; border-radius:0 6px 6px 0; font-size:.93rem; margin:1rem 0; }
   .note{ background:var(--orange-soft); border:1px solid var(--line); border-radius:var(--radius); padding:1rem 1.3rem; font-size:.88rem; color:var(--muted); margin:1.25rem 0; }
   table.level-table{ width:100%; border-collapse:collapse; margin:1.25rem 0; font-size:.92rem; }
+  @media (max-width:700px){ table.level-table{ display:block; overflow-x:auto; white-space:nowrap; } }
   table.level-table th, table.level-table td{ border:1px solid var(--line); padding:.6rem .9rem; text-align:left; }
   table.level-table th{ background:var(--orange-soft); font-family:var(--font-head); font-weight:600; }
   .quote{ font-style:italic; border-left:3px solid var(--line); padding-left:1rem; color:var(--muted); }
@@ -103,6 +104,7 @@
       <li><a href="#examples">8. Examples</a></li>
       <li><a href="#practices">9. Best Practices</a></li>
       <li><a href="#conclusion">10. Conclusion</a></li>
+      <li><a href="#checklist">Appendix. Checklist</a></li>
     </ol>
   </nav>
 
@@ -158,6 +160,7 @@
     </ul>
     <p>A common challenge is that many grants blend activities — a project may include both research components and training or service components. In such cases, the primary purpose of the award, as stated in the NOA and funding opportunity, governs classification.</p>
     <h3>2.3 The Morgan State University Institutional Definition</h3>
+    <p>As a reminder, research and development (R&amp;D) is creative and systematic work undertaken to increase the stock of knowledge and to devise new applications of that knowledge (Frascati Manual, OECD, 2015). Morgan State's own institutional policy reinforces this definition.</p>
     <p>Morgan State University's PI Handbook (Part 5, Definition D under the Conflicts of Interest policy) defines "research or development" as:</p>
     <p class="quote">"Basic or applied research or development, and includes the development or marketing of university-owned technology, the acquisition of services of an official or employee by an entity for research and development purposes, or participation in State economic development programs."</p>
     <p class="authority">— Morgan State University PI Handbook, Part 5 (2024, p. 6)</p>
@@ -185,14 +188,14 @@
     <h2>4. The Five-Level Classification Framework</h2>
     <p>The strongest evidence for whether a sponsored award constitutes R&amp;D activity is the award document itself. When the award is clear, classification begins and ends there. When it isn't, the reviewer works systematically down the hierarchy until a supported determination can be made. This approach is <strong>efficient</strong> — reviewers stop at the first level that gives a conclusive answer — and <strong>defensible</strong> — every classification is traceable to a named source that can be produced under audit.</p>
     <table class="level-table">
-      <tr><th>Level</th><th>Evidence Source</th></tr>
-      <tr><td>L1</td><td>Notice of Award (NOA)</td></tr>
-      <tr><td>L2</td><td>Funding Opportunity Announcement (FOA / RFA)</td></tr>
-      <tr><td>L3</td><td>ALN / CFDA Number</td></tr>
-      <tr><td>L4</td><td>Supporting Documentation (IRF, SOW, LOI, PI statement)</td></tr>
-      <tr><td>L5</td><td>Institutional Record</td></tr>
+      <tr><th>Level</th><th>Source</th><th>When to Use</th></tr>
+      <tr><td>L1 — Notice of Award (NOA)</td><td>Award letter or electronic notice issued by the sponsor</td><td>First step for every grant. If the NOA states a research purpose, stop here.</td></tr>
+      <tr><td>L2 — Funding Opportunity Announcement (FOA/RFA*)</td><td>NSF solicitation, NIH RFA*, DOE FOA, or equivalent</td><td>When the NOA does not explicitly describe research activity, check the funding announcement.</td></tr>
+      <tr><td>L3 — ALN/CFDA Number</td><td>Assistance Listings Number via SAM.gov</td><td>When the FOA is unavailable or inconclusive, look up the federal program classification.</td></tr>
+      <tr><td>L4 — Supporting Documentation</td><td>Internal Routing Form (IRF), Letter of Intent, Statement of Work, Principal Investigator (PI) statement, proposal summary</td><td>When federal-level sources are insufficient, review internal project documentation.</td></tr>
+      <tr><td>L5 — Institutional Record</td><td>Office of Research Funds Accounting (RFA†) records, HERD listing, Restricted Fund Account designation</td><td>When no other documentation is accessible, use the existing institutional designation.</td></tr>
     </table>
-    <p style="font-size:.85rem; color:var(--muted)">IRF = Internal Routing Form · SOW = Statement of Work · LOI = Letter of Intent</p>
+    <p style="font-size:.85rem; color:var(--muted)">* RFA in "FOA/RFA" = Request for Applications, the NIH term for a funding opportunity announcement. · † RFA in "Office of Research Funds Accounting" refers to the internal office — a different meaning from the abbreviation above.</p>
     <p>A grant classified at Level 1 has the strongest evidence base; Level 5 has the weakest — not because the classification is wrong, but because the documentation is more indirect. The goal over time is to move grants from Level 5 toward Level 1 and Level 2 as documentation is gathered and filed.</p>
 
     <h3>4.1 Level 1 — Notice of Award (NOA)</h3>
@@ -214,7 +217,7 @@
     <div class="example"><strong>R&amp;D:</strong> A community health research award where the NOA and FOA are inconclusive. The proposal shows community-based research with systematic data collection and an intent to publish. Classified Applied Research.</div>
 
     <h3>4.5 Level 5 — Institutional Record</h3>
-    <p>Grant management system records, the annual HERD listing, and Restricted Fund Account designations — used only when no stronger documentation is accessible. On a first-pass review, Level 5 will likely account for a large share of the list; that's expected. Label it accurately and treat it as a prioritized list for gathering stronger documentation ahead of the next reporting cycle.</p>
+    <p>Records from the Office of Research Funds Accounting, the annual HERD listing, and Restricted Fund Account designations — used only when no stronger documentation is accessible. On a first-pass review, Level 5 will likely account for a large share of the list; that's expected. Label it accurately and treat it as a prioritized list for gathering stronger documentation ahead of the next reporting cycle.</p>
   </section>
 
   <section class="doc-section" id="process">
@@ -238,10 +241,25 @@
 
   <section class="doc-section" id="examples">
     <h2>8. Examples</h2>
-    <div class="note">Examples below use illustrative, non-identifying details. Real award documents contain PI names and financial identifiers that should stay in internal ORA files, not public documentation.</div>
-    <div class="example"><strong>Confirmed R&amp;D:</strong> A biomedical research award from NIH. The NOA directly indicates "Is the Award R&amp;D? Yes," funding hypothesis-driven investigation with a defined research design. Classified R&amp;D — Basic Research, Level 1.</div>
-    <div class="example"><strong>Confirmed Not R&amp;D:</strong> A workforce technology-access award. The NOA directly indicates "R&amp;D Award? No," funding infrastructure deployment with no research objective. Classified Not R&amp;D, Level 1.</div>
-    <p><strong>Borderline cases:</strong> Program evaluation grants are Not R&amp;D unless the evaluation itself is designed to produce generalizable, published knowledge. Community-based research — including awards through programs like the Research Centers in Minority Institutions (RCMI) program — may qualify as Applied Research where the design is systematic and generalizable. NSF conference grants are generally R&amp;D by NSF's own classification; conference grants from other agencies need FOA-level review.</p>
+    <div class="note">Examples below are anonymized and marked "(Example)" — real award documents contain PI names and financial identifiers that shouldn't be published. Where a real, named award would make a stronger case, ORA can substitute one internally with the PI's permission; this public version keeps illustrative examples throughout.</div>
+    <p><strong>Research Centers in Minority Institutions (RCMI)</strong> is an NIH program that, by its own program definition, funds research infrastructure — so an award's RCMI designation is itself strong Level 3 evidence, even before reviewing the NOA or FOA.</p>
+    <h3>8.1 Confirmed R&amp;D — Strong Evidence</h3>
+    <table class="level-table">
+      <tr><th>Grant</th><th>Agency</th><th>Level</th><th>Determination</th><th>Evidence</th></tr>
+      <tr><td>NIH Research Center — Urban Health (Example)</td><td>NIH</td><td>L1–L3</td><td>R&amp;D — Applied Research</td><td>NOA, FOA, and ALN/CFDA all confirm research center infrastructure; RCMI designation is by definition research.</td></tr>
+      <tr><td>NASA Cooperative Research Agreement (Example)</td><td>NASA (prime award)</td><td>L1</td><td>R&amp;D — Applied Research</td><td>NOA confirms a prime cooperative agreement for NASA earth science research, with clear research objectives stated directly on the award.</td></tr>
+      <tr><td>NSF Advanced Science Research (Example)</td><td>NSF</td><td>L1</td><td>R&amp;D — Basic Research</td><td>The NOA's activity-type field is checked "Research" — the direct indicator alone is sufficient, and should override any conflicting prior-year listing.</td></tr>
+    </table>
+    <h3>8.2 Not R&amp;D — Well-Documented</h3>
+    <table class="level-table">
+      <tr><th>Grant</th><th>Agency</th><th>Level</th><th>Determination</th><th>Evidence</th></tr>
+      <tr><td>State Equipment Grant (Example)</td><td>State agency</td><td>L1</td><td>Not R&amp;D</td><td>NOA reviewed — funds a security-infrastructure equipment purchase; no research objective.</td></tr>
+      <tr><td>NSF STEM Education Program (Example)</td><td>NSF</td><td>L2</td><td>Not R&amp;D</td><td>FOA reviewed — an NSF STEM education program; primary activity is pedagogical improvement, not research generation.</td></tr>
+      <tr><td>Federal Mentoring Program (Example)</td><td>Federal agency</td><td>L2</td><td>Not R&amp;D</td><td>FOA reviewed — a mentoring and training program; award scope is training delivery, not research.</td></tr>
+      <tr><td>State/Federal Services Program (Example)</td><td>State/Federal</td><td>L4</td><td>Not R&amp;D</td><td>IRF reviewed — a service delivery program; no research design or data collection methodology identified.</td></tr>
+    </table>
+    <h3>8.3 Borderline Cases</h3>
+    <p><strong>Program Evaluation Grants:</strong> Not R&amp;D unless the evaluation itself is designed to produce generalizable, published knowledge. <strong>Community-Based Research:</strong> may qualify as Applied Research where the design is systematic and generalizable, including RCMI awards. <strong>Conference Grants:</strong> NSF conference grants are generally R&amp;D by NSF's own classification, and not R&amp;D otherwise unless a specific FOA says so; conference grants from other agencies need FOA-level review.</p>
   </section>
 
   <section class="doc-section" id="practices">
@@ -260,6 +278,19 @@
     <h2>10. Conclusion</h2>
     <p>The challenge of R&amp;D classification for HERD reporting is not unique to any single institution. This framework addresses it directly, anchoring every decision in a specific, retrievable document rather than institutional memory or agency-based assumption. Looking ahead, the goal is to embed this framework into Morgan State's standard award setup workflow, so classification happens at the start of an award's life, not the end.</p>
     <p>This guide will be updated as the HERD Survey evolves and Morgan State's sponsored portfolio grows. Feedback from ORA staff, faculty PIs, and peer-institution colleagues is welcome.</p>
+  </section>
+
+  <section class="doc-section" id="checklist">
+    <h2>Appendix. HERD Classification Checklist</h2>
+    <table class="level-table">
+      <tr><th></th><th>Classification Step</th><th>Notes / Evidence Filed</th></tr>
+      <tr><td>☐</td><td>NOA reviewed</td><td></td></tr>
+      <tr><td>☐</td><td>FOA/RFA reviewed (if applicable)</td><td></td></tr>
+      <tr><td>☐</td><td>ALN/CFDA verified</td><td></td></tr>
+      <tr><td>☐</td><td>Supporting documentation reviewed</td><td></td></tr>
+      <tr><td>☐</td><td>Evidence level recorded</td><td></td></tr>
+      <tr><td>☐</td><td>Reviewer initials/date</td><td></td></tr>
+    </table>
   </section>
 
 </main>
