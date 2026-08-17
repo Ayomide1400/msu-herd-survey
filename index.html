@@ -279,15 +279,16 @@
   footer a{ color:var(--muted); }
   footer .links{ margin:1rem 0; }
   footer .links a{ margin:0 .4rem; }
-  .footer-docs{ display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; margin:1.5rem 0; text-align:left; }
   .footer-doc{
-    display:flex; flex-direction:column; gap:.25rem; background:var(--card); border:1px solid var(--line);
-    border-radius:var(--radius); padding:1rem 1.25rem; min-width:220px; text-decoration:none; transition:border-color .15s;
+    display:inline-flex; flex-direction:column; align-items:center; gap:.3rem; background:var(--card);
+    border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.75rem; margin:1.5rem 0;
   }
-  .footer-doc:hover{ border-color:var(--orange); }
-  .footer-doc__label{ font-family:var(--font-head); font-weight:600; color:var(--ink); font-size:.98rem; display:flex; align-items:center; gap:.5rem; }
-  .footer-doc__label .tag{ font-family:var(--font-mono); font-size:.65rem; font-weight:700; color:var(--orange); background:var(--orange-soft); padding:.1rem .4rem; border-radius:3px; }
+  .footer-doc__label{ font-family:var(--font-head); font-weight:600; color:var(--ink); font-size:1rem; }
   .footer-doc__desc{ font-size:.8rem; color:var(--muted); }
+  .footer-doc__links{ display:flex; gap:1.25rem; margin-top:.5rem; }
+  .footer-doc__links a{ font-weight:600; color:var(--navy-2); }
+  :root[data-theme="dark"] .footer-doc__links a{ color:var(--orange-2); }
+  @media (prefers-color-scheme: dark){ .footer-doc__links a{ color:var(--orange-2); } }
   code{ background:var(--line); padding:.1rem .35rem; border-radius:4px; font-size:.85em; }
 </style>
 </head>
@@ -832,15 +833,13 @@
     <p>As the HERD Survey evolves and Morgan State's sponsored portfolio
     grows, this framework will be updated. Feedback from ORA staff, faculty PIs, and peers at other
     institutions is welcome.</p>
-    <div class="footer-docs">
-      <a href="pi-handbook.html" class="footer-doc">
-        <span class="footer-doc__label">Policy Reference</span>
-        <span class="footer-doc__desc">The framework as a formal policy document, on the web</span>
-      </a>
-      <a href="assets/RD-Classification-Framework.docx" download class="footer-doc">
-        <span class="footer-doc__label">Framework Document <span class="tag">.docx</span></span>
-        <span class="footer-doc__desc">The full write-up, with ORA's review incorporated</span>
-      </a>
+    <div class="footer-doc">
+      <span class="footer-doc__label">The Policy Reference</span>
+      <span class="footer-doc__desc">One document, two formats</span>
+      <div class="footer-doc__links">
+        <a href="pi-handbook.html">Read online →</a>
+        <a href="assets/RD-Classification-Framework.docx" download>Download (.docx) →</a>
+      </div>
     </div>
     <div class="links">
       <a href="https://ncses.nsf.gov" target="_blank" rel="noopener">NSF NCSES — HERD Survey</a>·
