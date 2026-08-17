@@ -3,168 +3,301 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>R&amp;D Evidence Framework — Morgan State University ORA</title>
+<title>Is This R&amp;D? — Morgan State University ORA</title>
+<meta name="description" content="An interactive five-level evidence framework for classifying sponsored awards as R&D for the NSF HERD Survey, built by Morgan State University's Office of Research Administration.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230b2545'/%3E%3Cpath d='M30 78V22M70 78V22M30 34h40M30 50h40M30 66h40' stroke='%23e57200' stroke-width='7' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --navy:#0b2545; --navy-2:#123a6b; --orange:#e57200; --orange-2:#ffb26b;
-    --bg:#f7f8fa; --card:#ffffff; --ink:#1c2430; --muted:#5b6572; --line:#e2e6ec;
-    --radius:14px;
+    --navy:#0b2545; --navy-2:#123a6b; --orange:#e57200; --orange-2:#ffb26b; --orange-soft:#fff1e2;
+    --bg:#f6f7fa; --card:#ffffff; --ink:#1c2430; --muted:#5b6572; --line:#e5e9ef;
+    --radius:16px; --shadow:0 1px 2px rgba(16,24,40,.04), 0 8px 24px -12px rgba(16,24,40,.12);
+    --font-head:'Manrope', -apple-system, sans-serif; --font-body:'Inter', -apple-system, sans-serif;
   }
   @media (prefers-color-scheme: dark){
-    :root{ --bg:#12161c; --card:#1a2029; --ink:#e8ecf1; --muted:#98a2b0; --line:#2a3240; --navy:#16345e; --navy-2:#1e4c8a; }
+    :root{ --bg:#0f1319; --card:#171d26; --ink:#e8ecf1; --muted:#94a0b0; --line:#262e3a; --navy:#16345e; --navy-2:#1e4c8a; --orange-soft:#2a2013;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5); }
   }
-  :root[data-theme="dark"]{ --bg:#12161c; --card:#1a2029; --ink:#e8ecf1; --muted:#98a2b0; --line:#2a3240; --navy:#16345e; --navy-2:#1e4c8a; }
-  :root[data-theme="light"]{ --bg:#f7f8fa; --card:#ffffff; --ink:#1c2430; --muted:#5b6572; --line:#e2e6ec; --navy:#0b2545; --navy-2:#123a6b; }
+  :root[data-theme="dark"]{ --bg:#0f1319; --card:#171d26; --ink:#e8ecf1; --muted:#94a0b0; --line:#262e3a; --navy:#16345e; --navy-2:#1e4c8a; --orange-soft:#2a2013; }
+  :root[data-theme="light"]{ --bg:#f6f7fa; --card:#ffffff; --ink:#1c2430; --muted:#5b6572; --line:#e5e9ef; --navy:#0b2545; --navy-2:#123a6b; --orange-soft:#fff1e2; }
 
-  * { box-sizing:border-box; }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
   body{
-    margin:0; font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background:var(--bg); color:var(--ink); line-height:1.6;
+    margin:0; font-family:var(--font-body);
+    background:var(--bg); color:var(--ink); line-height:1.65; font-size:16px;
   }
+  h1,h2,h3,h4{ font-family:var(--font-head); letter-spacing:-.01em; }
   a{ color:var(--navy-2); }
-  :root[data-theme="dark"] a, @media (prefers-color-scheme: dark){ a{ color:var(--orange-2); } }
+  :root[data-theme="dark"] a{ color:var(--orange-2); }
+  @media (prefers-color-scheme: dark){ a{ color:var(--orange-2); } :root[data-theme="light"] a{ color:var(--navy-2); } }
 
-  .wrap{ max-width:920px; margin:0 auto; padding:0 1.5rem; }
+  .wrap{ max-width:960px; margin:0 auto; padding:0 1.5rem; }
+  .icon{ width:1em; height:1em; display:inline-block; vertical-align:-.15em; stroke:currentColor; fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
 
+  /* ---------- Hero ---------- */
   header.hero{
-    background: linear-gradient(135deg, var(--navy), var(--navy-2));
-    color:#fff; padding:4rem 0 3rem;
+    position:relative; overflow:hidden;
+    background: linear-gradient(160deg, var(--navy) 0%, var(--navy-2) 75%);
+    color:#fff; padding:4.5rem 0 5rem;
   }
+  header.hero .bg-deco{ position:absolute; inset:0; opacity:.5; pointer-events:none; }
+  header.hero .wrap{ position:relative; z-index:1; }
   header.hero .eyebrow{
-    text-transform:uppercase; letter-spacing:.08em; font-size:.8rem; color:var(--orange-2); font-weight:600;
+    display:inline-flex; align-items:center; gap:.5rem;
+    text-transform:uppercase; letter-spacing:.08em; font-size:.75rem; color:var(--orange-2); font-weight:700;
+    background:rgba(255,255,255,.08); padding:.4rem .8rem; border-radius:999px; margin-bottom:1.25rem;
   }
-  header.hero h1{ font-size:2.1rem; margin:.5rem 0 .75rem; max-width:26ch; }
-  header.hero p.lead{ font-size:1.1rem; max-width:60ch; color:#dbe4f3; }
-  header.hero .byline{ margin-top:2rem; font-size:.9rem; color:#b9c7e0; }
+  header.hero h1{ font-size:2.4rem; font-weight:800; margin:.25rem 0 1rem; max-width:22ch; line-height:1.15; }
+  header.hero p.lead{ font-size:1.15rem; max-width:56ch; color:#d9e3f5; }
+  header.hero .cta-row{ display:flex; gap:.9rem; flex-wrap:wrap; margin-top:2rem; }
+  .btn{
+    display:inline-flex; align-items:center; gap:.5rem; font-family:var(--font-head); font-weight:700;
+    padding:.8rem 1.4rem; border-radius:10px; text-decoration:none; font-size:.95rem; border:none; cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover{ transform:translateY(-2px); }
+  .btn-primary{ background:var(--orange); color:#fff; box-shadow:0 8px 20px -6px rgba(229,114,0,.6); }
+  .btn-ghost{ background:rgba(255,255,255,.1); color:#fff; border:1px solid rgba(255,255,255,.35); }
+  .stat-row{ display:flex; gap:1.75rem; flex-wrap:wrap; margin-top:2.5rem; }
+  .stat{ }
+  .stat .n{ font-family:var(--font-head); font-size:1.4rem; font-weight:800; color:var(--orange-2); }
+  .stat .l{ font-size:.78rem; color:#b9c7e0; text-transform:uppercase; letter-spacing:.06em; }
+  header.hero .byline{ margin-top:2.5rem; font-size:.85rem; color:#9fb0cc; }
 
+  /* ---------- Nav ---------- */
   nav.toc{
-    position:sticky; top:0; z-index:10; background:var(--card); border-bottom:1px solid var(--line);
-    overflow-x:auto; white-space:nowrap;
+    position:sticky; top:0; z-index:20; background:color-mix(in srgb, var(--card) 92%, transparent);
+    backdrop-filter:blur(10px); border-bottom:1px solid var(--line); overflow-x:auto; white-space:nowrap;
+    scrollbar-width:none;
   }
-  nav.toc .wrap{ display:flex; gap:1.25rem; padding:.75rem 1.5rem; }
-  nav.toc a{ font-size:.85rem; text-decoration:none; color:var(--muted); font-weight:600; }
-  nav.toc a:hover{ color:var(--orange); }
+  nav.toc::-webkit-scrollbar{ display:none; }
+  nav.toc .wrap{ display:flex; gap:.4rem; padding:.65rem 1.5rem; }
+  nav.toc a{
+    font-size:.82rem; text-decoration:none; color:var(--muted); font-weight:600;
+    padding:.45rem .8rem; border-radius:999px; transition:background .15s, color .15s;
+  }
+  nav.toc a:hover{ color:var(--ink); background:var(--orange-soft); }
+  nav.toc a.active{ color:var(--orange); background:var(--orange-soft); }
 
-  section{ padding:3rem 0; border-bottom:1px solid var(--line); }
-  section:last-of-type{ border-bottom:none; }
-  h2{ font-size:1.5rem; margin-bottom:.25rem; }
-  h2 .num{ color:var(--orange); font-variant-numeric:tabular-nums; margin-right:.4rem; }
-  .subhead{ color:var(--muted); margin-top:0; margin-bottom:1.5rem; max-width:60ch; }
+  /* ---------- Sections ---------- */
+  section{ padding:4rem 0; }
+  section.tint{ background:linear-gradient(180deg, transparent, color-mix(in srgb, var(--orange) 4%, transparent) 40%, transparent); }
+  .reveal{ opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease; }
+  .reveal.in{ opacity:1; transform:none; }
 
-  .card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:1.5rem; }
-  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
-  .grid3{ display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
+  .section-head{ display:flex; gap:1rem; align-items:flex-start; margin-bottom:1.75rem; }
+  .section-head .icon-badge{
+    flex:none; width:2.75rem; height:2.75rem; border-radius:12px; background:var(--orange-soft);
+    color:var(--orange); display:flex; align-items:center; justify-content:center;
+  }
+  .section-head .icon-badge .icon{ width:1.4rem; height:1.4rem; }
+  .section-head h2{ font-size:1.55rem; margin:0 0 .3rem; }
+  .section-head .subhead{ color:var(--muted); margin:0; max-width:58ch; }
+
+  .card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:1.6rem; box-shadow:var(--shadow); }
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:1.1rem; }
+  .grid3{ display:grid; grid-template-columns:repeat(3,1fr); gap:1.1rem; }
   @media (max-width:700px){ .grid2, .grid3{ grid-template-columns:1fr; } }
 
-  blockquote.pull{
-    border-left:4px solid var(--orange); background:var(--card); padding:1.25rem 1.5rem;
-    margin:1.5rem 0; border-radius:0 var(--radius) var(--radius) 0; font-size:1.05rem;
-  }
-  blockquote.pull cite{ display:block; margin-top:.75rem; font-size:.8rem; color:var(--muted); font-style:normal; }
+  .feature-card{ display:flex; gap:.9rem; align-items:flex-start; }
+  .feature-card .fi{ flex:none; width:2.3rem; height:2.3rem; border-radius:9px; background:var(--orange-soft); color:var(--orange); display:flex; align-items:center; justify-content:center; }
+  .feature-card h3{ margin:.1rem 0 .3rem; font-size:1.02rem; }
+  .feature-card p{ margin:0; color:var(--muted); font-size:.92rem; }
 
-  .badge{ display:inline-block; font-size:.75rem; font-weight:700; padding:.15rem .55rem; border-radius:999px; }
+  blockquote.pull{
+    position:relative; border:1px solid var(--line); background:var(--card); padding:1.5rem 1.75rem 1.5rem 3.25rem;
+    margin:1.75rem 0; border-radius:var(--radius); font-size:1.05rem; box-shadow:var(--shadow);
+  }
+  blockquote.pull::before{
+    content:"\201C"; position:absolute; left:1.1rem; top:.6rem; font-family:var(--font-head); font-size:2.4rem;
+    color:var(--orange); font-weight:800; line-height:1;
+  }
+  blockquote.pull cite{ display:block; margin-top:.9rem; font-size:.8rem; color:var(--muted); font-style:normal; }
+
+  .badge{ display:inline-block; font-size:.75rem; font-weight:700; padding:.15rem .6rem; border-radius:999px; }
   .badge.rd{ background:#dff3e3; color:#136c34; }
   .badge.nrd{ background:#fbe1e1; color:#9c2626; }
   :root[data-theme="dark"] .badge.rd{ background:#0f3320; color:#7fe3a2; }
   :root[data-theme="dark"] .badge.nrd{ background:#3a1616; color:#f0a3a3; }
 
-  /* Ladder */
-  .ladder{ display:flex; flex-direction:column-reverse; gap:.6rem; margin:2rem 0; }
-  .rung{
-    display:grid; grid-template-columns:3.5rem 1fr; gap:1rem; align-items:center;
-    background:var(--card); border:1px solid var(--line); border-radius:10px; padding:1rem 1.25rem;
-    position:relative;
+  /* ---------- Ladder ---------- */
+  .ladder-wrap{ display:grid; grid-template-columns:2.2rem 1fr; gap:1.25rem; margin:2rem 0; }
+  .ladder-rail{ position:relative; }
+  .ladder-rail::before{
+    content:""; position:absolute; left:50%; top:.5rem; bottom:.5rem; width:3px; transform:translateX(-50%);
+    background:linear-gradient(180deg, var(--line), var(--orange) 90%); border-radius:3px;
   }
+  .ladder{ display:flex; flex-direction:column-reverse; gap:.9rem; }
+  .rung{
+    display:grid; grid-template-columns:3.2rem 1fr; gap:1rem; align-items:center;
+    background:var(--card); border:1px solid var(--line); border-radius:12px; padding:1.1rem 1.3rem;
+    box-shadow:var(--shadow); transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  }
+  .rung.active-rung{ border-color:var(--orange); box-shadow:0 0 0 3px var(--orange-soft), var(--shadow); transform:translateX(4px); }
   .rung .level{
-    font-weight:800; font-size:1.3rem; color:#fff; width:3.5rem; height:3.5rem; border-radius:50%;
-    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-head); font-weight:800; font-size:1.15rem; color:#fff; width:3.2rem; height:3.2rem; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; flex:none;
   }
   .rung.l1 .level{ background:var(--orange); }
-  .rung.l2 .level{ background:#e5860a; }
+  .rung.l2 .level{ background:#df8b1f; }
   .rung.l3 .level{ background:#c78e4a; }
   .rung.l4 .level{ background:#7a8ba3; }
   .rung.l5 .level{ background:#5b6572; }
-  .rung h3{ margin:0 0 .2rem; font-size:1.05rem; }
-  .rung p{ margin:0; color:var(--muted); font-size:.92rem; }
-  .ladder-caption{ text-align:center; color:var(--muted); font-size:.85rem; margin-top:-.5rem; }
-  .climb-arrow{ text-align:center; color:var(--orange); font-weight:700; font-size:.85rem; margin:-.3rem 0; }
-
-  /* Glossary */
-  details.gloss{ border-bottom:1px solid var(--line); padding:.75rem 0; }
-  details.gloss summary{ cursor:pointer; font-weight:600; list-style:none; display:flex; justify-content:space-between; }
-  details.gloss summary::-webkit-details-marker{ display:none; }
-  details.gloss summary::after{ content:"+"; color:var(--orange); font-weight:800; }
-  details.gloss[open] summary::after{ content:"–"; }
-  details.gloss p{ color:var(--muted); margin:.5rem 0 0; }
-
-  /* Wizard */
-  #wizard .step{ display:none; }
-  #wizard .step.active{ display:block; }
-  .choice-btn{
-    display:block; width:100%; text-align:left; padding:.9rem 1.1rem; margin:.5rem 0;
-    background:var(--card); border:1px solid var(--line); border-radius:10px; cursor:pointer;
-    font-size:.95rem; color:var(--ink); font-family:inherit;
+  .rung h3{ margin:0 0 .2rem; font-size:1.02rem; }
+  .rung p{ margin:0; color:var(--muted); font-size:.9rem; }
+  .ladder-caption{ text-align:center; color:var(--muted); font-size:.85rem; }
+  .climb-tag{
+    display:flex; align-items:center; justify-content:center; gap:.4rem; color:var(--orange); font-weight:700;
+    font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; margin-bottom:.75rem;
   }
-  .choice-btn:hover{ border-color:var(--orange); background:rgba(229,114,0,.06); }
-  .wizard-progress{ font-size:.8rem; color:var(--muted); margin-bottom:.75rem; }
-  .result-box{ border-radius:var(--radius); padding:1.5rem; }
+
+  .callout{
+    display:flex; gap:1rem; background:var(--orange-soft); border:1px solid color-mix(in srgb, var(--orange) 35%, transparent);
+    border-radius:var(--radius); padding:1.25rem 1.5rem;
+  }
+  .callout .fi{ flex:none; width:2rem; height:2rem; color:var(--orange); }
+  .callout p{ margin:0; }
+
+  /* ---------- Reliability/Validity diagram ---------- */
+  .rv-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:1.25rem; margin:1.5rem 0; }
+  @media (max-width:700px){ .rv-grid{ grid-template-columns:1fr; } }
+  .rv-card{ text-align:center; }
+  .rv-card svg{ width:100%; max-width:150px; margin:.5rem auto 1rem; display:block; }
+  .rv-card h4{ margin:0 0 .3rem; font-size:.95rem; }
+  .rv-card p{ margin:0; font-size:.85rem; color:var(--muted); }
+
+  /* ---------- Glossary ---------- */
+  .gloss-controls{ display:flex; gap:.6rem; flex-wrap:wrap; margin-bottom:1.25rem; align-items:center; }
+  .gloss-search{
+    flex:1 1 220px; padding:.65rem 1rem; border-radius:999px; border:1px solid var(--line);
+    background:var(--card); color:var(--ink); font-size:.9rem; font-family:inherit;
+  }
+  .chip{
+    font-size:.8rem; font-weight:600; padding:.4rem .9rem; border-radius:999px; border:1px solid var(--line);
+    background:var(--card); color:var(--muted); cursor:pointer; transition:all .15s;
+  }
+  .chip.active{ background:var(--orange); border-color:var(--orange); color:#fff; }
+  .gloss-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:.9rem; }
+  .gloss-item{
+    background:var(--card); border:1px solid var(--line); border-radius:12px; padding:1rem 1.15rem;
+    transition:opacity .2s, transform .2s;
+  }
+  .gloss-item .term{ display:flex; justify-content:space-between; align-items:center; gap:.5rem; font-weight:700; font-size:.92rem; cursor:pointer; }
+  .gloss-item .cat-tag{ font-size:.65rem; text-transform:uppercase; letter-spacing:.04em; font-weight:700; color:var(--orange); background:var(--orange-soft); padding:.15rem .5rem; border-radius:6px; white-space:nowrap; }
+  .gloss-item p{ margin:.5rem 0 0; color:var(--muted); font-size:.85rem; display:none; }
+  .gloss-item.open p{ display:block; }
+  .gloss-item.hidden{ display:none; }
+
+  /* ---------- Wizard ---------- */
+  #wizard{ position:relative; }
+  .wizard-bar{ display:flex; gap:.35rem; margin-bottom:1.5rem; }
+  .wizard-bar .seg{ flex:1; height:6px; border-radius:4px; background:var(--line); transition:background .3s; }
+  .wizard-bar .seg.filled{ background:var(--orange); }
+  #wizard .step{ display:none; animation:slideIn .35s ease; }
+  #wizard .step.active{ display:block; }
+  @keyframes slideIn{ from{ opacity:0; transform:translateX(12px); } to{ opacity:1; transform:none; } }
+  .wizard-q{ font-size:1.05rem; font-weight:700; margin:0 0 1rem; font-family:var(--font-head); }
+  .wizard-hint{ font-size:.85rem; color:var(--muted); font-weight:400; display:block; margin-top:.4rem; }
+  .choice-btn{
+    display:flex; align-items:center; justify-content:space-between; gap:.75rem; width:100%; text-align:left;
+    padding:1rem 1.2rem; margin:.55rem 0; background:var(--card); border:1.5px solid var(--line); border-radius:12px;
+    cursor:pointer; font-size:.95rem; color:var(--ink); font-family:inherit; transition:all .15s;
+  }
+  .choice-btn:hover{ border-color:var(--orange); background:var(--orange-soft); transform:translateX(3px); }
+  .choice-btn .arrow{ flex:none; opacity:0; transition:opacity .15s, transform .15s; color:var(--orange); }
+  .choice-btn:hover .arrow{ opacity:1; transform:translateX(2px); }
+  .result-box{ border-radius:var(--radius); padding:1.75rem; animation:slideIn .4s ease; }
   .result-box.rd{ background:#dff3e3; color:#0f3320; }
   .result-box.nrd{ background:#fbe1e1; color:#3a1616; }
-  :root[data-theme="dark"] .result-box.rd{ background:#0f3320; color:#dff3e3; }
-  :root[data-theme="dark"] .result-box.nrd{ background:#3a1616; color:#fbe1e1; }
-  .restart-btn{ margin-top:1rem; background:var(--navy); color:#fff; border:none; padding:.6rem 1.1rem; border-radius:8px; cursor:pointer; font-size:.85rem; }
+  :root[data-theme="dark"] .result-box.rd{ background:#123322; color:#dff3e3; }
+  :root[data-theme="dark"] .result-box.nrd{ background:#3a1e1e; color:#fbe1e1; }
+  .result-box h3{ display:flex; align-items:center; gap:.6rem; margin:0 0 .6rem; }
+  .restart-btn{
+    margin-top:1.1rem; background:var(--navy); color:#fff; border:none; padding:.7rem 1.3rem; border-radius:8px;
+    cursor:pointer; font-size:.85rem; font-weight:700; font-family:var(--font-head); display:inline-flex; align-items:center; gap:.5rem;
+  }
 
-  /* Then/now icons */
-  .compare{ display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-top:1.5rem; }
-  @media (max-width:700px){ .compare{ grid-template-columns:1fr; } }
-  .compare .col{ text-align:center; }
-  .compare .icon{ font-size:2.5rem; }
-  .compare h4{ margin:.5rem 0 .25rem; }
-  .compare p{ color:var(--muted); font-size:.9rem; }
+  /* ---------- Timeline (then/now) ---------- */
+  .timeline{ display:flex; align-items:center; gap:1rem; margin-top:1.75rem; }
+  .timeline .col{ flex:1; text-align:center; }
+  .timeline .col .fi{ width:2.75rem; height:2.75rem; border-radius:50%; background:var(--orange-soft); color:var(--orange); display:flex; align-items:center; justify-content:center; margin:0 auto .75rem; }
+  .timeline .col h4{ margin:0 0 .3rem; font-size:.95rem; }
+  .timeline .col p{ margin:0; color:var(--muted); font-size:.85rem; }
+  .timeline .connector{ flex:none; color:var(--orange); }
 
-  ul.tight{ padding-left:1.2rem; }
-  ul.tight li{ margin:.4rem 0; }
+  ul.tight{ padding-left:0; list-style:none; margin:0; }
+  ul.tight li{ display:flex; gap:.7rem; margin:.7rem 0; font-size:.94rem; }
+  ul.tight li .fi{ flex:none; color:var(--orange); margin-top:.2rem; }
 
-  footer{ padding:3rem 0; text-align:center; color:var(--muted); font-size:.85rem; }
+  footer{ padding:3.5rem 0; text-align:center; color:var(--muted); font-size:.85rem; border-top:1px solid var(--line); margin-top:1rem; }
   footer a{ color:var(--muted); }
+  footer .links{ margin:1rem 0; }
+  footer .links a{ margin:0 .4rem; }
   code{ background:var(--line); padding:.1rem .35rem; border-radius:4px; font-size:.85em; }
 </style>
 </head>
 <body>
 
 <header class="hero">
+  <svg class="bg-deco" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <circle cx="720" cy="60" r="140" fill="rgba(255,255,255,.04)"/>
+    <circle cx="60" cy="380" r="180" fill="rgba(229,114,0,.08)"/>
+    <path d="M120 320V80M180 320V80M120 120h60M120 180h60M120 240h60M120 300h60" stroke="rgba(255,255,255,.08)" stroke-width="6" stroke-linecap="round"/>
+  </svg>
   <div class="wrap">
-    <div class="eyebrow">Morgan State University · Office of Research Administration</div>
+    <div class="eyebrow">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M4 12l6 6L20 6"/></svg>
+      Morgan State University · Office of Research Administration
+    </div>
     <h1>Is this R&amp;D? A framework for classifying sponsored awards for the HERD Survey</h1>
     <p class="lead">
       Every year, Morgan State reports its research and development (R&amp;D) spending to the
-      National Science Foundation. This site walks through the five-level evidence framework
-      the Office of Research Administration built to answer one question consistently:
-      <em>should this award count as R&amp;D?</em>
+      National Science Foundation. This framework turns "is this R&amp;D?" from a judgment call
+      into a repeatable, defensible answer — five levels of evidence, one consistent process.
     </p>
+    <div class="cta-row">
+      <a href="#try-it" class="btn btn-primary">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M5 3l14 9-14 9V3z"/></svg>
+        Try the classifier
+      </a>
+      <a href="#ladder" class="btn btn-ghost">See the framework</a>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><div class="n">5</div><div class="l">Evidence levels</div></div>
+      <div class="stat"><div class="n">1</div><div class="l">Consistent process</div></div>
+      <div class="stat"><div class="n">$150K+</div><div class="l">HERD reporting threshold</div></div>
+    </div>
     <div class="byline">Prepared by Ayomide Ajibola, MBA · Grant Associate, Office of Research Administration</div>
   </div>
 </header>
 
-<nav class="toc">
+<nav class="toc" id="toc">
   <div class="wrap">
-    <a href="#problem">The Problem</a>
-    <a href="#why">Why It Matters</a>
-    <a href="#history">History</a>
-    <a href="#counts">What Counts</a>
-    <a href="#ladder">The Ladder</a>
-    <a href="#measurement">Measurement</a>
-    <a href="#try-it">Try It</a>
-    <a href="#glossary">Glossary</a>
-    <a href="#gap">The Gap</a>
-    <a href="#practices">Best Practices</a>
+    <a href="#problem" data-target="problem">Problem</a>
+    <a href="#why" data-target="why">Why It Matters</a>
+    <a href="#history" data-target="history">History</a>
+    <a href="#counts" data-target="counts">What Counts</a>
+    <a href="#ladder" data-target="ladder">The Ladder</a>
+    <a href="#measurement" data-target="measurement">Measurement</a>
+    <a href="#try-it" data-target="try-it">Try It</a>
+    <a href="#glossary" data-target="glossary">Glossary</a>
+    <a href="#gap" data-target="gap">The Gap</a>
+    <a href="#practices" data-target="practices">Best Practices</a>
   </div>
 </nav>
 
 <section id="problem">
-  <div class="wrap">
-    <h2><span class="num">01</span>What problem are we trying to solve?</h2>
-    <p class="subhead">Start here — before any of the mechanics, this is the situation the framework exists to fix.</p>
+  <div class="wrap reveal">
+    <div class="section-head">
+      <div class="icon-badge"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/></svg></div>
+      <div>
+        <h2>What problem are we trying to solve?</h2>
+        <p class="subhead">Start here — before any of the mechanics, this is the situation the framework exists to fix.</p>
+      </div>
+    </div>
     <div class="card">
       <p>
         Someone in the Office of Research Administration is looking at a sponsored award. Somewhere,
@@ -179,7 +312,7 @@
         classify the same award differently, the number Morgan State reports wobbles, and it becomes
         very hard to defend under audit.
       </p>
-      <p>
+      <p style="margin-bottom:0">
         This framework replaces "go interpret it yourself" with a repeatable process: tell it what
         evidence you have, and it tells you where that evidence lands — and how confident you should be
         in the answer.
@@ -188,44 +321,55 @@
   </div>
 </section>
 
-<section id="why">
-  <div class="wrap">
-    <h2><span class="num">02</span>Why R&amp;D classification — and research itself — matters</h2>
-    <p class="subhead">The HERD Survey isn't paperwork. It's how Morgan State's research capacity gets counted.</p>
+<section id="why" class="tint">
+  <div class="wrap reveal">
+    <div class="section-head">
+      <div class="icon-badge"><svg class="icon" viewBox="0 0 24 24"><path d="M4 20V10M11 20V4M18 20v-7"/></svg></div>
+      <div>
+        <h2>Why R&amp;D classification — and research itself — matters</h2>
+        <p class="subhead">The HERD Survey isn't paperwork. It's how Morgan State's research capacity gets counted.</p>
+      </div>
+    </div>
     <div class="grid2">
-      <div class="card">
-        <h3>Federal funding eligibility</h3>
-        <p>The National Institutes of Health (NIH), NSF, and other federal agencies use HERD data in
-        their allocation models. Higher reported R&amp;D expenditures open access to funding
-        programs — including some specifically for institutions building research infrastructure,
-        and others aimed at institutions still building that capacity.</p>
+      <div class="card feature-card">
+        <div class="fi"><svg class="icon" viewBox="0 0 24 24"><path d="M12 2v20M17 6H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+        <div><h3>Federal funding eligibility</h3>
+        <p>NIH, NSF, and other federal agencies use HERD data in their allocation models. Higher
+        reported R&amp;D expenditures open access to funding programs — including some aimed at
+        institutions still building research infrastructure.</p></div>
       </div>
-      <div class="card">
-        <h3>Institutional rankings</h3>
+      <div class="card feature-card">
+        <div class="fi"><svg class="icon" viewBox="0 0 24 24"><path d="M4 21V11l8-6 8 6v10M9 21v-6h6v6"/></svg></div>
+        <div><h3>Institutional rankings</h3>
         <p>HERD data feeds NSF's own R&amp;D expenditure rankings and the Carnegie Classification®
-        system. Morgan State's standing as a Doctoral University with High Research Activity depends
-        in part on accurately capturing the full scope of R&amp;D activity across the institution.</p>
+        system. Morgan State's Doctoral University standing depends in part on accurately capturing
+        the full scope of R&amp;D activity.</p></div>
       </div>
-      <div class="card">
-        <h3>Indirect cost (F&amp;A) recovery</h3>
+      <div class="card feature-card">
+        <div class="fi"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></div>
+        <div><h3>Indirect cost (F&amp;A) recovery</h3>
         <p>Facilities and Administrative (F&amp;A) cost rates are calculated in part from R&amp;D
-        expenditure. Classifying R&amp;D activity as non-R&amp;D shrinks that base — with direct
-        financial consequences for recovering research infrastructure costs.</p>
+        expenditure. Misclassifying R&amp;D shrinks that base — with direct financial consequences.</p></div>
       </div>
-      <div class="card">
-        <h3>Audit and compliance defensibility</h3>
-        <p>Because HERD data supports federal reporting obligations, misclassification is a compliance
-        risk in either direction. An evidence-based methodology — one that points to a named document
-        instead of a hunch — is the strongest defense if that classification is ever questioned.</p>
+      <div class="card feature-card">
+        <div class="fi"><svg class="icon" viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V7l8-4z"/></svg></div>
+        <div><h3>Audit and compliance defensibility</h3>
+        <p>Because HERD data supports federal reporting obligations, misclassification is a risk in
+        either direction. Pointing to a named document instead of a hunch is the strongest defense.</p></div>
       </div>
     </div>
   </div>
 </section>
 
 <section id="history">
-  <div class="wrap">
-    <h2><span class="num">03</span>A bit of history</h2>
-    <p class="subhead">Where the HERD Survey comes from, and how classification practice has evolved.</p>
+  <div class="wrap reveal">
+    <div class="section-head">
+      <div class="icon-badge"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></div>
+      <div>
+        <h2>A bit of history</h2>
+        <p class="subhead">Where the HERD Survey comes from, and how classification practice has evolved.</p>
+      </div>
+    </div>
     <div class="card">
       <p>
         The HERD Survey is run annually by NSF's National Center for Science and Engineering
@@ -241,20 +385,21 @@
         definition to keep U.S. reporting comparable across institutions and, internationally, across
         countries.
       </p>
-      <p>
+      <p style="margin-bottom:0">
         What has <em>not</em> historically existed at most institutions, Morgan State included, is a
         documented, repeatable method for deciding whether an individual award meets that definition.
       </p>
     </div>
-    <div class="compare">
+    <div class="timeline">
       <div class="col">
-        <div class="icon">🗂️</div>
+        <div class="fi"><svg class="icon" viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 9h16M9 4v16"/></svg></div>
         <h4>Before</h4>
         <p>Classification by memory, sponsor name, or "however we did it last year" — undocumented,
-        and hard to defend when someone asks why.</p>
+        hard to defend when someone asks why.</p>
       </div>
+      <div class="connector"><svg class="icon" viewBox="0 0 24 24" style="width:1.6em;height:1.6em"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
       <div class="col">
-        <div class="icon">🧭</div>
+        <div class="fi"><svg class="icon" viewBox="0 0 24 24"><path d="M4 21V11l8-6 8 6v10"/><path d="M9 21v-6h6v6"/></svg></div>
         <h4>Now</h4>
         <p>A five-level, document-anchored process — every classification traceable to a specific,
         retrievable source.</p>
@@ -263,13 +408,18 @@
   </div>
 </section>
 
-<section id="counts">
-  <div class="wrap">
-    <h2><span class="num">04</span>What counts as R&amp;D — and what doesn't</h2>
-    <p class="subhead">The Frascati Manual (OECD, 2015) definition, as NSF applies it to higher education.</p>
+<section id="counts" class="tint">
+  <div class="wrap reveal">
+    <div class="section-head">
+      <div class="icon-badge"><svg class="icon" viewBox="0 0 24 24"><path d="M9 3v4M15 3v4M4 8h16M6 8v11a2 2 0 002 2h8a2 2 0 002-2V8"/></svg></div>
+      <div>
+        <h2>What counts as R&amp;D — and what doesn't</h2>
+        <p class="subhead">The Frascati Manual (OECD, 2015) definition, as NSF applies it to higher education.</p>
+      </div>
+    </div>
     <blockquote class="pull">
-      "Creative and systematic work undertaken to increase the stock of knowledge, and to devise new
-      applications of that knowledge."
+      Creative and systematic work undertaken to increase the stock of knowledge, and to devise new
+      applications of that knowledge.
       <cite>— Frascati Manual, OECD (2015)</cite>
     </blockquote>
     <div class="grid3">
@@ -292,14 +442,14 @@
     <p><strong>Key test:</strong> is the primary purpose of the award to generate new knowledge?
     If yes, it's R&amp;D. If no, it isn't — regardless of which agency funded it.</p>
     <div class="card">
-      <h3>What is NOT R&amp;D</h3>
+      <h3 style="margin-top:0">What is NOT R&amp;D</h3>
       <p>The following are generally not R&amp;D, even when funded by an agency known primarily for research:
       workforce development and training programs; service delivery contracts; equipment and infrastructure
       grants (unless the equipment is integral to a specific research project); educational curriculum
       development (unless the curriculum itself is the object of study); institutional capacity-building
       without a defined research objective; and conference or dissemination grants, unless the funding
       agency itself classifies the conference as R&amp;D.</p>
-      <p style="color:var(--muted); font-size:.9rem;">Many awards blend activities. When they do, the
+      <p style="color:var(--muted); font-size:.9rem; margin-bottom:0">Many awards blend activities. When they do, the
       <em>primary</em> purpose stated in the Notice of Award and funding opportunity governs the
       classification.</p>
     </div>
@@ -307,9 +457,14 @@
 </section>
 
 <section id="ladder">
-  <div class="wrap">
-    <h2><span class="num">05</span>The evidence ladder</h2>
-    <p class="subhead">What the five levels do for us — and why climbing toward Level 1 is the goal.</p>
+  <div class="wrap reveal">
+    <div class="section-head">
+      <div class="icon-badge"><svg class="icon" viewBox="0 0 24 24"><path d="M6 21V3M18 21V3M6 7h12M6 12h12M6 17h12"/></svg></div>
+      <div>
+        <h2>The evidence ladder</h2>
+        <p class="subhead">What the five levels do for us — and why climbing toward Level 1 is the goal.</p>
+      </div>
+    </div>
     <blockquote class="pull">
       This framework is built around a hierarchy of evidence. The central principle is simple: the
       strongest evidence for whether a sponsored award constitutes R&amp;D is the award document
@@ -320,57 +475,97 @@
       <strong>defensible</strong> — the classification is always traceable to a specific, named
       source that can be produced under audit.
     </blockquote>
-    <p class="climb-arrow">↑ stronger evidence, climb toward Level 1 ↑</p>
-    <div class="ladder">
-      <div class="rung l5">
-        <div class="level">L5</div>
-        <div><h3>Institutional Record</h3>
-        <p>Grant management system records, prior HERD listing, fund account type. Last resort — used only when nothing stronger is accessible.</p></div>
-      </div>
-      <div class="rung l4">
-        <div class="level">L4</div>
-        <div><h3>Supporting Documentation</h3>
-        <p>Internal Routing Form (IRF), proposal or Statement of Work (SOW), Letter of Intent (LOI), or a written PI statement.</p></div>
-      </div>
-      <div class="rung l3">
-        <div class="level">L3</div>
-        <div><h3>ALN / CFDA Number</h3>
-        <p>The federal program's listing on SAM.gov — program-level activity type, used when the award itself is silent.</p></div>
-      </div>
-      <div class="rung l2">
-        <div class="level">L2</div>
-        <div><h3>Funding Opportunity Announcement (FOA / RFA)</h3>
-        <p>The solicitation the award was made under — defines the program's research intent up front.</p></div>
-      </div>
-      <div class="rung l1">
-        <div class="level">L1</div>
-        <div><h3>Notice of Award (NOA)</h3>
-        <p>The award document itself — the strongest and most direct evidence of what the award funds.</p></div>
+    <div class="climb-tag">
+      <svg class="icon" viewBox="0 0 24 24" style="width:1em;height:1em"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+      stronger evidence — climb toward Level 1
+    </div>
+    <div class="ladder-wrap">
+      <div class="ladder-rail"></div>
+      <div class="ladder" id="ladder">
+        <div class="rung l5" data-rung="5">
+          <div class="level">L5</div>
+          <div><h3>Institutional Record</h3>
+          <p>Grant management system records, prior HERD listing, fund account type. Last resort — used only when nothing stronger is accessible.</p></div>
+        </div>
+        <div class="rung l4" data-rung="4">
+          <div class="level">L4</div>
+          <div><h3>Supporting Documentation</h3>
+          <p>Internal Routing Form (IRF), proposal or Statement of Work (SOW), Letter of Intent (LOI), or a written PI statement.</p></div>
+        </div>
+        <div class="rung l3" data-rung="3">
+          <div class="level">L3</div>
+          <div><h3>ALN / CFDA Number</h3>
+          <p>The federal program's listing on SAM.gov — program-level activity type, used when the award itself is silent.</p></div>
+        </div>
+        <div class="rung l2" data-rung="2">
+          <div class="level">L2</div>
+          <div><h3>Funding Opportunity Announcement (FOA / RFA)</h3>
+          <p>The solicitation the award was made under — defines the program's research intent up front.</p></div>
+        </div>
+        <div class="rung l1" data-rung="1">
+          <div class="level">L1</div>
+          <div><h3>Notice of Award (NOA)</h3>
+          <p>The award document itself — the strongest and most direct evidence of what the award funds.</p></div>
+        </div>
       </div>
     </div>
     <p class="ladder-caption">A grant classified at Level 1 has the strongest evidence base. A grant
     classified at Level 5 has the weakest — not because the classification is wrong, but because the
-    documentation behind it is more indirect.</p>
-    <div class="card">
-      <p style="margin:0"><strong>Important:</strong> Federal Notices of Award are required under
-      Uniform Guidance (2 CFR Part 200) to directly indicate whether an award is research. Before
-      doing any inferential reading of the NOA's language, look first for that direct indication —
-      NSF, NIH, and NASA notices all answer the "Is this R&amp;D?" question explicitly. The keyword
-      search described in Level 1 below is a fallback for when that direct answer isn't present, not
-      the first move.</p>
+    documentation behind it is more indirect.
+    <span style="display:block; margin-top:.3rem;"><em>Tip: the ladder highlights live as you work through the classifier below.</em></span></p>
+    <div class="callout">
+      <svg class="icon fi" viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>
+      <p><strong>Important:</strong> Federal Notices of Award are required under Uniform Guidance
+      (2 CFR Part 200) to directly indicate whether an award is research. Before doing any
+      inferential reading of the NOA's language, look first for that direct indication — NSF, NIH,
+      and NASA notices all answer the "Is this R&amp;D?" question explicitly. Keyword-reading the
+      NOA is a fallback for when that direct answer isn't present, not the first move.</p>
     </div>
   </div>
 </section>
 
-<section id="measurement">
-  <div class="wrap">
-    <h2><span class="num">06</span>Measurement: reliability and validity</h2>
-    <p class="subhead">Why a document hierarchy is, in effect, a measurement instrument — and what makes a measurement instrument trustworthy.</p>
+<section id="measurement" class="tint">
+  <div class="wrap reveal">
+    <div class="section-head">
+      <div class="icon-badge"><svg class="icon" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8M21 3h-6v6"/></svg></div>
+      <div>
+        <h2>Measurement: reliability and validity</h2>
+        <p class="subhead">Why a document hierarchy is, in effect, a measurement instrument — and what makes one trustworthy.</p>
+      </div>
+    </div>
     <div class="card">
       <p>
         In research methodology, a good measurement has two separate properties, and it's easy to
         have one without the other:
       </p>
+      <div class="rv-grid">
+        <div class="rv-card">
+          <svg viewBox="0 0 140 140">
+            <circle cx="70" cy="70" r="60" fill="none" stroke="var(--line)" stroke-width="2"/>
+            <circle cx="70" cy="70" r="40" fill="none" stroke="var(--line)" stroke-width="2"/>
+            <circle cx="70" cy="70" r="20" fill="none" stroke="var(--line)" stroke-width="2"/>
+            <circle cx="70" cy="70" r="3" fill="var(--muted)"/>
+            <g fill="var(--orange)">
+              <circle cx="105" cy="35" r="5"/><circle cx="108" cy="42" r="5"/><circle cx="112" cy="30" r="5"/><circle cx="100" cy="30" r="5"/>
+            </g>
+          </svg>
+          <h4>Reliable, not valid</h4>
+          <p>Tightly clustered — but off-target. Consistent answers that are consistently wrong.</p>
+        </div>
+        <div class="rv-card">
+          <svg viewBox="0 0 140 140">
+            <circle cx="70" cy="70" r="60" fill="none" stroke="var(--line)" stroke-width="2"/>
+            <circle cx="70" cy="70" r="40" fill="none" stroke="var(--line)" stroke-width="2"/>
+            <circle cx="70" cy="70" r="20" fill="none" stroke="var(--line)" stroke-width="2"/>
+            <circle cx="70" cy="70" r="3" fill="var(--muted)"/>
+            <g fill="#1f9d55">
+              <circle cx="73" cy="66" r="5"/><circle cx="67" cy="73" r="5"/><circle cx="75" cy="74" r="5"/><circle cx="66" cy="65" r="5"/>
+            </g>
+          </svg>
+          <h4>Reliable and valid</h4>
+          <p>Tightly clustered on target. This is what the five-level ladder is built to produce.</p>
+        </div>
+      </div>
       <div class="grid2">
         <div>
           <h3>Reliability</h3>
@@ -385,128 +580,151 @@
         </div>
       </div>
       <p>
-        The five-level ladder is designed to improve both at once. It improves <strong>reliability</strong>
+        The five-level ladder improves both at once. It improves <strong>reliability</strong>
         because every reviewer starts at the same place (the NOA) and works down the same sequence in
         the same order — the outcome depends on the evidence, not on individual habit or guesswork.
         It improves <strong>validity</strong> because each level is anchored to a document authored by
         the funding agency itself — closer to the federal government's own definition of the award —
-        rather than to institutional memory, a sponsor-name shortcut, or an assumption carried forward
+        rather than institutional memory, a sponsor-name shortcut, or an assumption carried forward
         from a prior year.
       </p>
-      <p style="color:var(--muted); font-size:.92rem;">
+      <p style="color:var(--muted); font-size:.92rem; margin-bottom:0">
         In short: the ladder isn't paperwork for its own sake. It's what turns "is this R&amp;D?"
         from a judgment call into something closer to a scientific measurement — one where the answer
-        holds up no matter who is asking the question.
+        holds up no matter who is asking.
       </p>
     </div>
   </div>
 </section>
 
 <section id="try-it">
-  <div class="wrap">
-    <h2><span class="num">07</span>Try it: what level are you standing on?</h2>
-    <p class="subhead">Tell it what you've got. It tells you where the classification lands, and how strong the evidence is.</p>
+  <div class="wrap reveal">
+    <div class="section-head">
+      <div class="icon-badge"><svg class="icon" viewBox="0 0 24 24"><path d="M5 3l14 9-14 9V3z"/></svg></div>
+      <div>
+        <h2>Try it: what level are you standing on?</h2>
+        <p class="subhead">Tell it what you've got. It tells you where the classification lands, and how strong the evidence is.</p>
+      </div>
+    </div>
     <div class="card" id="wizard">
-      <div class="wizard-progress" id="wizard-progress">Step 1 of 5</div>
-
-      <div class="step active" data-step="noa-exists">
-        <p><strong>Do you have the Notice of Award (NOA) — the award document from the sponsor?</strong></p>
-        <button class="choice-btn" data-next="noa-direct">Yes, I have it</button>
-        <button class="choice-btn" data-next="foa-exists">No / not yet</button>
+      <div class="wizard-bar" id="wizard-bar">
+        <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
       </div>
 
-      <div class="step" data-step="noa-direct">
-        <p><strong>Does the NOA directly state whether this is research?</strong> (Federal NOAs are
-        required under Uniform Guidance to answer this — check for an explicit "Is this R&amp;D?" or
-        activity-type field before anything else.)</p>
-        <button class="choice-btn" data-result="rd" data-level="1" data-basis="Direct indication on the NOA">Yes — it's marked R&amp;D</button>
-        <button class="choice-btn" data-result="nrd" data-level="1" data-basis="Direct indication on the NOA">Yes — it's marked Not R&amp;D / instruction / training</button>
-        <button class="choice-btn" data-next="noa-language">No direct indicator on the form</button>
+      <div class="step active" data-step="noa-exists" data-rung="1">
+        <p class="wizard-q">Do you have the Notice of Award (NOA) — the award document from the sponsor?</p>
+        <button class="choice-btn" data-next="noa-direct">Yes, I have it <span class="arrow">→</span></button>
+        <button class="choice-btn" data-next="foa-exists">No / not yet <span class="arrow">→</span></button>
       </div>
 
-      <div class="step" data-step="noa-language">
-        <p><strong>Look at the purpose language in the NOA itself.</strong> Does it describe research,
-        study, investigation, hypothesis-driven work, or new-knowledge generation — or does it describe
-        service delivery, training, outreach, technical assistance, or infrastructure?</p>
-        <button class="choice-btn" data-result="rd" data-level="1" data-basis="NOA purpose language (inferential)">Research-type language</button>
-        <button class="choice-btn" data-result="nrd" data-level="1" data-basis="NOA purpose language (inferential)">Service/training/infrastructure language</button>
-        <button class="choice-btn" data-next="foa-exists">Still unclear</button>
+      <div class="step" data-step="noa-direct" data-rung="1">
+        <p class="wizard-q">Does the NOA directly state whether this is research?
+        <span class="wizard-hint">Federal NOAs are required under Uniform Guidance to answer this — check for an explicit "Is this R&amp;D?" or activity-type field before anything else.</span></p>
+        <button class="choice-btn" data-result="rd" data-level="1" data-basis="Direct indication on the NOA">Yes — it's marked R&amp;D <span class="arrow">→</span></button>
+        <button class="choice-btn" data-result="nrd" data-level="1" data-basis="Direct indication on the NOA">Yes — it's marked Not R&amp;D / instruction / training <span class="arrow">→</span></button>
+        <button class="choice-btn" data-next="noa-language">No direct indicator on the form <span class="arrow">→</span></button>
       </div>
 
-      <div class="step" data-step="foa-exists">
-        <p><strong>Do you have the Funding Opportunity Announcement (FOA / RFA) the award was made under?</strong></p>
-        <button class="choice-btn" data-next="foa-language">Yes</button>
-        <button class="choice-btn" data-next="aln-exists">No / not available</button>
+      <div class="step" data-step="noa-language" data-rung="1">
+        <p class="wizard-q">Look at the purpose language in the NOA itself.
+        <span class="wizard-hint">Does it describe research, study, investigation, hypothesis-driven work, or new-knowledge generation — or service delivery, training, outreach, technical assistance, or infrastructure?</span></p>
+        <button class="choice-btn" data-result="rd" data-level="1" data-basis="NOA purpose language (inferential)">Research-type language <span class="arrow">→</span></button>
+        <button class="choice-btn" data-result="nrd" data-level="1" data-basis="NOA purpose language (inferential)">Service/training/infrastructure language <span class="arrow">→</span></button>
+        <button class="choice-btn" data-next="foa-exists">Still unclear <span class="arrow">→</span></button>
       </div>
 
-      <div class="step" data-step="foa-language">
-        <p><strong>Does the solicitation describe the program as funding research or knowledge
-        generation — or does the agency legislate the whole program as R&amp;D (as NSF generally does)?</strong></p>
-        <button class="choice-btn" data-result="rd" data-level="2" data-basis="Funding Opportunity Announcement">Yes, research intent is clear</button>
-        <button class="choice-btn" data-result="nrd" data-level="2" data-basis="Funding Opportunity Announcement">No, it's service/training oriented</button>
-        <button class="choice-btn" data-next="aln-exists">Still unclear</button>
+      <div class="step" data-step="foa-exists" data-rung="2">
+        <p class="wizard-q">Do you have the Funding Opportunity Announcement (FOA / RFA) the award was made under?</p>
+        <button class="choice-btn" data-next="foa-language">Yes <span class="arrow">→</span></button>
+        <button class="choice-btn" data-next="aln-exists">No / not available <span class="arrow">→</span></button>
       </div>
 
-      <div class="step" data-step="aln-exists">
-        <p><strong>Look up the ALN / CFDA number at <a href="https://sam.gov/fal" target="_blank" rel="noopener">sam.gov/fal</a>. Which best describes the program?</strong></p>
-        <button class="choice-btn" data-result="rd" data-level="3" data-basis="ALN/CFDA program listing">NSF 47.xxx, or objectives describe research/knowledge generation</button>
-        <button class="choice-btn" data-result="nrd" data-level="3" data-basis="ALN/CFDA program listing">DHHS 93.5xx–93.6xx, or objectives describe services/training</button>
-        <button class="choice-btn" data-next="irf">NIH 93.xxx, DOD 12.xxx, or still unclear — needs case-by-case review</button>
+      <div class="step" data-step="foa-language" data-rung="2">
+        <p class="wizard-q">Does the solicitation describe the program as funding research or knowledge generation
+        <span class="wizard-hint">— or does the agency legislate the whole program as R&amp;D, as NSF generally does?</span></p>
+        <button class="choice-btn" data-result="rd" data-level="2" data-basis="Funding Opportunity Announcement">Yes, research intent is clear <span class="arrow">→</span></button>
+        <button class="choice-btn" data-result="nrd" data-level="2" data-basis="Funding Opportunity Announcement">No, it's service/training oriented <span class="arrow">→</span></button>
+        <button class="choice-btn" data-next="aln-exists">Still unclear <span class="arrow">→</span></button>
       </div>
 
-      <div class="step" data-step="irf">
-        <p><strong>Check the Internal Routing Form (IRF) or proposal/Statement of Work. Is
-        "Research &amp; Development" checked (vs. Instruction/Training), with a hypothesis, data
-        collection and analysis, or a stated plan to publish?</strong></p>
-        <button class="choice-btn" data-result="rd" data-level="4" data-basis="Internal Routing Form / proposal review">Yes — R&amp;D box checked, research character present</button>
-        <button class="choice-btn" data-result="nrd" data-level="4" data-basis="Internal Routing Form / proposal review">No — outreach or instruction only</button>
-        <button class="choice-btn" data-next="l5">Still unclear / documentation unavailable</button>
+      <div class="step" data-step="aln-exists" data-rung="3">
+        <p class="wizard-q">Look up the ALN / CFDA number at <a href="https://sam.gov/fal" target="_blank" rel="noopener">sam.gov/fal</a>. Which best describes the program?</p>
+        <button class="choice-btn" data-result="rd" data-level="3" data-basis="ALN/CFDA program listing">NSF 47.xxx, or objectives describe research/knowledge generation <span class="arrow">→</span></button>
+        <button class="choice-btn" data-result="nrd" data-level="3" data-basis="ALN/CFDA program listing">DHHS 93.5xx–93.6xx, or objectives describe services/training <span class="arrow">→</span></button>
+        <button class="choice-btn" data-next="irf">NIH 93.xxx, DOD 12.xxx, or still unclear — needs case-by-case review <span class="arrow">→</span></button>
       </div>
 
-      <div class="step" data-step="l5">
-        <p><strong>Use the institutional record</strong> — grant management system, prior HERD listing,
-        or fund account type designation — as a last resort.</p>
-        <button class="choice-btn" data-result="unclear" data-level="5" data-basis="Institutional record (last resort)">See result</button>
+      <div class="step" data-step="irf" data-rung="4">
+        <p class="wizard-q">Check the Internal Routing Form (IRF) or proposal/Statement of Work.
+        <span class="wizard-hint">Is "Research &amp; Development" checked (vs. Instruction/Training), with a hypothesis, data collection and analysis, or a stated plan to publish?</span></p>
+        <button class="choice-btn" data-result="rd" data-level="4" data-basis="Internal Routing Form / proposal review">Yes — R&amp;D box checked, research character present <span class="arrow">→</span></button>
+        <button class="choice-btn" data-result="nrd" data-level="4" data-basis="Internal Routing Form / proposal review">No — outreach or instruction only <span class="arrow">→</span></button>
+        <button class="choice-btn" data-next="l5">Still unclear / documentation unavailable <span class="arrow">→</span></button>
+      </div>
+
+      <div class="step" data-step="l5" data-rung="5">
+        <p class="wizard-q">Use the institutional record — grant management system, prior HERD listing, or fund account type designation — as a last resort.</p>
+        <button class="choice-btn" data-result="unclear" data-level="5" data-basis="Institutional record (last resort)">See result <span class="arrow">→</span></button>
       </div>
 
       <div id="wizard-result" style="display:none;"></div>
-      <button class="restart-btn" id="wizard-restart" style="display:none;">Start over</button>
+      <button class="restart-btn" id="wizard-restart" style="display:none;">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M4 4v6h6M20 20v-6h-6"/><path d="M5.5 15a8 8 0 0013.9 3M18.5 9A8 8 0 004.6 6"/></svg>
+        Start over
+      </button>
     </div>
   </div>
 </section>
 
-<section id="glossary">
-  <div class="wrap">
-    <h2><span class="num">08</span>Definitions</h2>
-    <p class="subhead">Every acronym used above, in one place.</p>
-    <div class="card">
-      <details class="gloss"><summary>HERD — Higher Education Research and Development Survey</summary><p>NSF's annual survey measuring R&amp;D expenditures at U.S. colleges and universities.</p></details>
-      <details class="gloss"><summary>NSF — National Science Foundation</summary><p>The federal agency that administers the HERD Survey and funds research across all fields of science and engineering.</p></details>
-      <details class="gloss"><summary>NCSES — National Center for Science and Engineering Statistics</summary><p>The statistical unit within NSF that runs the HERD Survey.</p></details>
-      <details class="gloss"><summary>OECD — Organisation for Economic Co-operation and Development</summary><p>Publisher of the Frascati Manual, the international standard defining R&amp;D.</p></details>
-      <details class="gloss"><summary>NOA — Notice of Award</summary><p>The official document a sponsor issues to formally grant an award, including its purpose, amount, and terms.</p></details>
-      <details class="gloss"><summary>FOA / RFA — Funding Opportunity Announcement / Request for Applications</summary><p>The public solicitation under which an award is made (NIH uses RFA/RFP; NSF and DOE use FOA).</p></details>
-      <details class="gloss"><summary>ALN / CFDA — Assistance Listings Number / Catalog of Federal Domestic Assistance</summary><p>A five-digit federal program identifier (format XX.XXX). Renamed from CFDA to ALN in 2021 under the DATA Act; both terms remain in use. Looked up at sam.gov/fal.</p></details>
-      <details class="gloss"><summary>IRF — Internal Routing Form</summary><p>The internal form a PI completes when submitting a proposal, including an activity-type declaration.</p></details>
-      <details class="gloss"><summary>SOW — Statement of Work</summary><p>The section of an award or proposal describing the specific work to be performed.</p></details>
-      <details class="gloss"><summary>LOI — Letter of Intent</summary><p>An early document sent to a sponsor signaling intent to apply, sometimes describing project purpose.</p></details>
-      <details class="gloss"><summary>F&amp;A — Facilities and Administrative (costs)</summary><p>Indirect costs recovered on sponsored awards; the recovery rate is calculated in part from R&amp;D expenditure.</p></details>
-      <details class="gloss"><summary>DOE — Department of Energy</summary><p>Federal agency funding scientific research, largely through its Office of Science.</p></details>
-      <details class="gloss"><summary>DOD — Department of Defense</summary><p>Federal agency funding both basic/applied research and non-research service contracts.</p></details>
-      <details class="gloss"><summary>DHHS — Department of Health and Human Services</summary><p>Parent agency of NIH; also funds many service- and training-oriented programs.</p></details>
-      <details class="gloss"><summary>NIH — National Institutes of Health</summary><p>Federal biomedical research agency within DHHS; funds a mix of research and training programs.</p></details>
-      <details class="gloss"><summary>HBCU — Historically Black College or University</summary><p>An institution of higher education established before 1964 with the principal mission of educating Black Americans.</p></details>
-      <details class="gloss"><summary>MSI — Minority-Serving Institution</summary><p>A federal designation for institutions enrolling significant proportions of minority students.</p></details>
-      <details class="gloss"><summary>Uniform Guidance — 2 CFR Part 200</summary><p>The federal regulations governing grants administration, including the requirement that federal NOAs indicate R&amp;D status directly.</p></details>
-      <details class="gloss"><summary>Carnegie Classification®</summary><p>The framework used to categorize U.S. colleges and universities by research activity, among other factors.</p></details>
+<section id="glossary" class="tint">
+  <div class="wrap reveal">
+    <div class="section-head">
+      <div class="icon-badge"><svg class="icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/></svg></div>
+      <div>
+        <h2>Definitions</h2>
+        <p class="subhead">Every acronym used above, in one place. Search or filter by type.</p>
+      </div>
+    </div>
+    <div class="gloss-controls">
+      <input class="gloss-search" id="gloss-search" type="text" placeholder="Search terms…">
+      <button class="chip active" data-cat="all">All</button>
+      <button class="chip" data-cat="agency">Agencies</button>
+      <button class="chip" data-cat="document">Documents</button>
+      <button class="chip" data-cat="other">Other</button>
+    </div>
+    <div class="gloss-grid" id="gloss-grid">
+      <div class="gloss-item" data-cat="document"><div class="term"><span>HERD</span><span class="cat-tag">Document</span></div><p>Higher Education Research and Development Survey — NSF's annual survey measuring R&amp;D expenditures at U.S. colleges and universities.</p></div>
+      <div class="gloss-item" data-cat="agency"><div class="term"><span>NSF</span><span class="cat-tag">Agency</span></div><p>National Science Foundation — administers the HERD Survey and funds research across science and engineering.</p></div>
+      <div class="gloss-item" data-cat="agency"><div class="term"><span>NCSES</span><span class="cat-tag">Agency</span></div><p>National Center for Science and Engineering Statistics — the statistical unit within NSF that runs the HERD Survey.</p></div>
+      <div class="gloss-item" data-cat="other"><div class="term"><span>OECD</span><span class="cat-tag">Other</span></div><p>Organisation for Economic Co-operation and Development — publisher of the Frascati Manual, the international standard defining R&amp;D.</p></div>
+      <div class="gloss-item" data-cat="document"><div class="term"><span>NOA</span><span class="cat-tag">Document</span></div><p>Notice of Award — the official document a sponsor issues to formally grant an award, including its purpose, amount, and terms.</p></div>
+      <div class="gloss-item" data-cat="document"><div class="term"><span>FOA / RFA</span><span class="cat-tag">Document</span></div><p>Funding Opportunity Announcement / Request for Applications — the public solicitation under which an award is made (NIH uses RFA/RFP; NSF and DOE use FOA).</p></div>
+      <div class="gloss-item" data-cat="other"><div class="term"><span>ALN / CFDA</span><span class="cat-tag">Other</span></div><p>Assistance Listings Number / Catalog of Federal Domestic Assistance — a five-digit federal program identifier (XX.XXX). Renamed CFDA→ALN in 2021 under the DATA Act. Looked up at sam.gov/fal.</p></div>
+      <div class="gloss-item" data-cat="document"><div class="term"><span>IRF</span><span class="cat-tag">Document</span></div><p>Internal Routing Form — the internal form a PI completes when submitting a proposal, including an activity-type declaration.</p></div>
+      <div class="gloss-item" data-cat="document"><div class="term"><span>SOW</span><span class="cat-tag">Document</span></div><p>Statement of Work — the section of an award or proposal describing the specific work to be performed.</p></div>
+      <div class="gloss-item" data-cat="document"><div class="term"><span>LOI</span><span class="cat-tag">Document</span></div><p>Letter of Intent — an early document sent to a sponsor signaling intent to apply, sometimes describing project purpose.</p></div>
+      <div class="gloss-item" data-cat="other"><div class="term"><span>F&amp;A</span><span class="cat-tag">Other</span></div><p>Facilities and Administrative costs — indirect costs recovered on sponsored awards; the rate is calculated in part from R&amp;D expenditure.</p></div>
+      <div class="gloss-item" data-cat="agency"><div class="term"><span>DOE</span><span class="cat-tag">Agency</span></div><p>Department of Energy — funds scientific research, largely through its Office of Science.</p></div>
+      <div class="gloss-item" data-cat="agency"><div class="term"><span>DOD</span><span class="cat-tag">Agency</span></div><p>Department of Defense — funds both basic/applied research and non-research service contracts.</p></div>
+      <div class="gloss-item" data-cat="agency"><div class="term"><span>DHHS</span><span class="cat-tag">Agency</span></div><p>Department of Health and Human Services — parent agency of NIH; also funds many service- and training-oriented programs.</p></div>
+      <div class="gloss-item" data-cat="agency"><div class="term"><span>NIH</span><span class="cat-tag">Agency</span></div><p>National Institutes of Health — federal biomedical research agency within DHHS; funds a mix of research and training programs.</p></div>
+      <div class="gloss-item" data-cat="other"><div class="term"><span>HBCU</span><span class="cat-tag">Other</span></div><p>Historically Black College or University — an institution established before 1964 with the principal mission of educating Black Americans.</p></div>
+      <div class="gloss-item" data-cat="other"><div class="term"><span>MSI</span><span class="cat-tag">Other</span></div><p>Minority-Serving Institution — a federal designation for institutions enrolling significant proportions of minority students.</p></div>
+      <div class="gloss-item" data-cat="document"><div class="term"><span>Uniform Guidance</span><span class="cat-tag">Document</span></div><p>2 CFR Part 200 — the federal regulations governing grants administration, including the requirement that federal NOAs indicate R&amp;D status directly.</p></div>
+      <div class="gloss-item" data-cat="other"><div class="term"><span>Carnegie Classification®</span><span class="cat-tag">Other</span></div><p>The framework used to categorize U.S. colleges and universities by research activity, among other factors.</p></div>
     </div>
   </div>
 </section>
 
 <section id="gap">
-  <div class="wrap">
-    <h2><span class="num">09</span>What other institutions are doing</h2>
-    <p class="subhead">This isn't a gap unique to any one type of institution — it's common across research-active universities generally.</p>
+  <div class="wrap reveal">
+    <div class="section-head">
+      <div class="icon-badge"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a13 13 0 010 18 13 13 0 010-18z"/></svg></div>
+      <div>
+        <h2>What other institutions are doing</h2>
+        <p class="subhead">This isn't a gap unique to any one type of institution — it's common across research-active universities generally.</p>
+      </div>
+    </div>
     <div class="card">
       <p>
         Most research-intensive institutions do not have procedural documentation like this for HERD
@@ -515,7 +733,7 @@
         self-classification with no independent check, or simply carrying forward the prior year's
         listing without review. Each approach is fast, and each is prone to error in both directions.
       </p>
-      <p>
+      <p style="margin-bottom:0">
         Morgan State's five-level framework — every determination tied to a named, retrievable
         document — goes beyond what most peer institutions have formally published. Organizations
         including NCURA (National Council of University Research Administrators), AURA (Association
@@ -527,23 +745,23 @@
   </div>
 </section>
 
-<section id="practices">
-  <div class="wrap">
-    <h2><span class="num">10</span>Best practices</h2>
+<section id="practices" class="tint">
+  <div class="wrap reveal">
+    <div class="section-head">
+      <div class="icon-badge"><svg class="icon" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg></div>
+      <div>
+        <h2>Best practices</h2>
+        <p class="subhead">Habits that keep the framework working year over year.</p>
+      </div>
+    </div>
     <div class="card">
       <ul class="tight">
-        <li>Always start with the NOA, and look first for a direct research indicator before reading
-        into its language.</li>
-        <li>Build an NOA file for every active award, filed electronically somewhere accessible during
-        HERD review.</li>
-        <li>Document every determination — a note as short as "NOA reviewed, direct R&amp;D indicator
-        present, classified R&amp;D" takes thirty seconds and provides real protection under audit.</li>
-        <li>Don't assume based on agency alone: NIH funds training programs, NSF funds education
-        programs, and DOD funds service contracts alongside their research portfolios.</li>
-        <li>Flag borderline awards early, and start a Level 2–4 review before the HERD reporting
-        cycle, not during it.</li>
-        <li>Keep the classification file living — revisit it when an award's scope changes through a
-        modification or supplement.</li>
+        <li><svg class="icon fi" viewBox="0 0 24 24"><path d="M4 12l6 6L20 6"/></svg> Always start with the NOA, and look first for a direct research indicator before reading into its language.</li>
+        <li><svg class="icon fi" viewBox="0 0 24 24"><path d="M4 12l6 6L20 6"/></svg> Build an NOA file for every active award, filed electronically somewhere accessible during HERD review.</li>
+        <li><svg class="icon fi" viewBox="0 0 24 24"><path d="M4 12l6 6L20 6"/></svg> Document every determination — a note as short as "NOA reviewed, direct R&amp;D indicator present, classified R&amp;D" takes thirty seconds and provides real protection under audit.</li>
+        <li><svg class="icon fi" viewBox="0 0 24 24"><path d="M4 12l6 6L20 6"/></svg> Don't assume based on agency alone: NIH funds training programs, NSF funds education programs, and DOD funds service contracts alongside their research portfolios.</li>
+        <li><svg class="icon fi" viewBox="0 0 24 24"><path d="M4 12l6 6L20 6"/></svg> Flag borderline awards early, and start a Level 2–4 review before the HERD reporting cycle, not during it.</li>
+        <li><svg class="icon fi" viewBox="0 0 24 24"><path d="M4 12l6 6L20 6"/></svg> Keep the classification file living — revisit it when an award's scope changes through a modification or supplement.</li>
       </ul>
     </div>
   </div>
@@ -554,39 +772,68 @@
     <p>This is a living document. As the HERD Survey evolves and Morgan State's sponsored portfolio
     grows, this framework will be updated. Feedback from ORA staff, faculty PIs, and peers at other
     institutions is welcome.</p>
-    <p>
-      References:
-      <a href="https://ncses.nsf.gov" target="_blank" rel="noopener">NSF NCSES — HERD Survey</a> ·
-      <a href="https://www.oecd.org/en/publications/frascati-manual-2015_9789264239012-en.html" target="_blank" rel="noopener">OECD Frascati Manual (2015)</a> ·
-      <a href="https://www.ecfr.gov/current/title-2/subtitle-A/chapter-II/part-200" target="_blank" rel="noopener">2 CFR Part 200 (Uniform Guidance)</a> ·
+    <div class="links">
+      <a href="https://ncses.nsf.gov" target="_blank" rel="noopener">NSF NCSES — HERD Survey</a>·
+      <a href="https://www.oecd.org/en/publications/frascati-manual-2015_9789264239012-en.html" target="_blank" rel="noopener">OECD Frascati Manual (2015)</a>·
+      <a href="https://www.ecfr.gov/current/title-2/subtitle-A/chapter-II/part-200" target="_blank" rel="noopener">2 CFR Part 200 (Uniform Guidance)</a>·
       <a href="https://sam.gov/fal" target="_blank" rel="noopener">SAM.gov Assistance Listings</a>
-    </p>
+    </div>
     <p>Ayomide Ajibola, MBA · Office of Research Administration · Morgan State University</p>
   </div>
 </footer>
 
 <script>
 (function(){
+  /* Scroll reveal */
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: .12 });
+  revealEls.forEach(el => io.observe(el));
+
+  /* Active nav highlighting */
+  const navLinks = document.querySelectorAll('nav.toc a');
+  const sections = [...navLinks].map(a => document.getElementById(a.dataset.target)).filter(Boolean);
+  const navObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const link = document.querySelector(`nav.toc a[data-target="${entry.target.id}"]`);
+      if (entry.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -50% 0px' });
+  sections.forEach(s => navObserver.observe(s));
+
+  /* Wizard */
   const steps = document.querySelectorAll('#wizard .step');
-  const progress = document.getElementById('wizard-progress');
+  const segs = document.querySelectorAll('#wizard-bar .seg');
   const resultBox = document.getElementById('wizard-result');
   const restartBtn = document.getElementById('wizard-restart');
   const order = ['noa-exists','noa-direct','noa-language','foa-exists','foa-language','aln-exists','irf','l5'];
+  const rungs = document.querySelectorAll('.rung');
+
+  function highlightRung(n){
+    rungs.forEach(r => r.classList.toggle('active-rung', r.dataset.rung === String(n)));
+  }
 
   function showStep(name){
+    const stepEl = [...steps].find(s => s.dataset.step === name);
     steps.forEach(s => s.classList.toggle('active', s.dataset.step === name));
     const idx = order.indexOf(name);
-    progress.textContent = `Step ${idx+1} of ${order.length}`;
+    segs.forEach((seg, i) => seg.classList.toggle('filled', i <= idx));
+    if (stepEl) highlightRung(stepEl.dataset.rung);
   }
 
   function showResult(kind, level, basis){
     steps.forEach(s => s.classList.remove('active'));
-    progress.textContent = '';
+    segs.forEach(seg => seg.classList.add('filled'));
     resultBox.style.display = 'block';
-    restartBtn.style.display = 'inline-block';
+    restartBtn.style.display = 'inline-flex';
+    highlightRung(level);
     if (kind === 'unclear') {
       resultBox.className = 'result-box nrd';
-      resultBox.innerHTML = `<h3>Level 5 — Institutional Record</h3>
+      resultBox.innerHTML = `<h3><span class="badge nrd">Level 5</span> Institutional Record</h3>
         <p>No stronger documentation was accessible, so classification falls back to institutional
         record (grant system, prior HERD listing, or fund account type). That's honest, expected for
         a first pass, and exactly what Level 5 is for — flag this award to gather stronger
@@ -595,9 +842,9 @@
     }
     const isRD = kind === 'rd';
     resultBox.className = 'result-box ' + (isRD ? 'rd' : 'nrd');
-    resultBox.innerHTML = `<h3><span class="badge ${isRD ? 'rd' : 'nrd'}">${isRD ? 'R&D' : 'Not R&D'}</span> — Level ${level}</h3>
+    resultBox.innerHTML = `<h3><span class="badge ${isRD ? 'rd' : 'nrd'}">${isRD ? 'R&D' : 'Not R&D'}</span> Level ${level}</h3>
       <p><strong>Basis:</strong> ${basis}</p>
-      <p>Record this basis in the award's classification file — that's what makes the determination
+      <p style="margin-bottom:0">Record this basis in the award's classification file — that's what makes the determination
       defensible later.</p>`;
   }
 
@@ -618,6 +865,35 @@
   });
 
   showStep('noa-exists');
+
+  /* Glossary filter + search */
+  const items = document.querySelectorAll('.gloss-item');
+  const chips = document.querySelectorAll('.chip');
+  const search = document.getElementById('gloss-search');
+  let activeCat = 'all';
+
+  function applyFilter(){
+    const q = search.value.trim().toLowerCase();
+    items.forEach(item => {
+      const matchesCat = activeCat === 'all' || item.dataset.cat === activeCat;
+      const matchesText = !q || item.textContent.toLowerCase().includes(q);
+      item.classList.toggle('hidden', !(matchesCat && matchesText));
+    });
+  }
+
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      chips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      activeCat = chip.dataset.cat;
+      applyFilter();
+    });
+  });
+  search.addEventListener('input', applyFilter);
+
+  items.forEach(item => {
+    item.querySelector('.term').addEventListener('click', () => item.classList.toggle('open'));
+  });
 })();
 </script>
 
