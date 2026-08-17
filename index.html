@@ -8,13 +8,14 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230b2545'/%3E%3Cpath d='M30 78V22M70 78V22M30 34h40M30 50h40M30 66h40' stroke='%23e57200' stroke-width='7' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --navy:#0b2545; --navy-2:#123a6b; --orange:#b5601e; --orange-2:#c97a2f; --orange-soft:#f2ede5;
     --bg:#f7f7f5; --card:#ffffff; --ink:#1e2126; --muted:#5a6169; --line:#dfe1e3;
     --radius:8px; --shadow:0 1px 2px rgba(16,24,40,.03), 0 3px 10px -6px rgba(16,24,40,.10);
     --font-head:'Source Serif 4', Georgia, 'Times New Roman', serif; --font-body:'Public Sans', -apple-system, "Segoe UI", sans-serif;
+    --font-mono:'JetBrains Mono', ui-monospace, monospace;
   }
   @media (prefers-color-scheme: dark){
     :root{ --bg:#12151a; --card:#191d23; --ink:#e6e8eb; --muted:#98a0a8; --line:#2a2e35; --navy:#16345e; --navy-2:#1e4c8a; --orange-soft:#28221b; --orange-2:#d99a52;
@@ -44,6 +45,15 @@
     color:#fff; padding:4.5rem 0 5rem;
   }
   header.hero .bg-deco{ position:absolute; inset:0; opacity:.3; pointer-events:none; }
+  header.hero .hero-grid{
+    position:absolute; inset:0; pointer-events:none;
+    background-image:
+      linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+    background-size:56px 56px;
+    -webkit-mask-image:radial-gradient(ellipse 90% 70% at 70% 20%, black 20%, transparent 75%);
+    mask-image:radial-gradient(ellipse 90% 70% at 70% 20%, black 20%, transparent 75%);
+  }
   header.hero .wrap{ position:relative; z-index:1; }
   header.hero .eyebrow{
     display:inline-flex; align-items:center; gap:.5rem;
@@ -90,22 +100,47 @@
   .reveal{ opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease; }
   .reveal.in{ opacity:1; transform:none; }
 
-  .section-head{ display:flex; gap:1rem; align-items:flex-start; margin-bottom:1.75rem; }
-  .section-head .icon-badge{
-    flex:none; width:2.6rem; height:2.6rem; border-radius:6px; background:var(--orange-soft);
-    color:var(--orange); display:flex; align-items:center; justify-content:center; border:1px solid var(--line);
+  .section-head{ margin-bottom:1.75rem; }
+  .kicker{
+    display:inline-flex; align-items:center; gap:.65rem; font-family:var(--font-mono);
+    font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted);
+    margin-bottom:1rem;
   }
-  .section-head .icon-badge .icon{ width:1.3rem; height:1.3rem; }
+  .kicker__num{
+    display:inline-block; padding:.15rem .5rem; background:var(--orange); color:#fff; font-weight:700;
+    border-radius:3px;
+  }
   .section-head h2{ font-size:1.45rem; font-weight:600; margin:0 0 .3rem; }
   .section-head .subhead{ color:var(--muted); margin:0; max-width:58ch; }
+
+  /* ---------- Marquee ---------- */
+  .marquee{ background:var(--navy); overflow:hidden; padding:.9rem 0; border-bottom:1px solid rgba(255,255,255,.08); }
+  .marquee__track{ display:flex; width:max-content; animation:marquee 32s linear infinite; }
+  .marquee__track span{
+    font-family:var(--font-mono); font-size:.8rem; letter-spacing:.04em; color:#cfdaeb;
+    padding:0 1.5rem; white-space:nowrap;
+  }
+  .marquee__track .dot{ color:var(--orange-2); }
+  @keyframes marquee{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce){ .marquee__track{ animation:none; } }
+
+  /* ---------- Manifesto ---------- */
+  .manifesto{ background:var(--navy); color:#fff; padding:4.5rem 0; }
+  .manifesto p{
+    font-family:var(--font-head); font-size:clamp(1.4rem, 3.2vw, 2rem); line-height:1.4; margin:0;
+    max-width:38ch;
+  }
+  .manifesto .hl{ color:var(--orange-2); font-style:italic; }
+  .manifesto .kicker{ color:#9fb0cc; }
 
   .card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:1.6rem; box-shadow:var(--shadow); }
   .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:1.1rem; }
   .grid3{ display:grid; grid-template-columns:repeat(3,1fr); gap:1.1rem; }
   @media (max-width:700px){ .grid2, .grid3{ grid-template-columns:1fr; } }
 
-  .feature-card{ display:flex; gap:.9rem; align-items:flex-start; }
+  .feature-card{ display:flex; gap:.9rem; align-items:flex-start; position:relative; }
   .feature-card .fi{ flex:none; width:2.3rem; height:2.3rem; border-radius:9px; background:var(--orange-soft); color:var(--orange); display:flex; align-items:center; justify-content:center; }
+  .feature-card .idx{ position:absolute; top:1.1rem; right:1.3rem; font-family:var(--font-mono); font-size:.7rem; color:var(--line); font-weight:700; }
   .feature-card h3{ margin:.1rem 0 .3rem; font-size:1.02rem; }
   .feature-card p{ margin:0; color:var(--muted); font-size:.92rem; }
 
@@ -244,6 +279,7 @@
 <body>
 
 <header class="hero">
+  <div class="hero-grid" aria-hidden="true"></div>
   <svg class="bg-deco" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
     <circle cx="720" cy="60" r="140" fill="rgba(255,255,255,.04)"/>
     <circle cx="60" cy="380" r="180" fill="rgba(229,114,0,.08)"/>
@@ -269,13 +305,34 @@
       <a href="pi-handbook.html" class="btn btn-ghost">Read the policy reference</a>
     </div>
     <div class="stat-row">
-      <div class="stat"><div class="n">5</div><div class="l">Evidence levels</div></div>
-      <div class="stat"><div class="n">1</div><div class="l">Consistent process</div></div>
-      <div class="stat"><div class="n">$150K+</div><div class="l">HERD reporting threshold</div></div>
+      <div class="stat"><div class="n"><span data-count="5">0</span></div><div class="l">Evidence levels</div></div>
+      <div class="stat"><div class="n"><span data-count="1">0</span></div><div class="l">Consistent process</div></div>
+      <div class="stat"><div class="n">$<span data-count="150">0</span>K+</div><div class="l">HERD reporting threshold</div></div>
     </div>
     <div class="byline">Prepared by Ayomide Ajibola, MBA · Grant Associate, Office of Research Administration</div>
   </div>
 </header>
+
+<section class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    <span>NOTICE OF AWARD</span><span class="dot">//</span>
+    <span>FUNDING OPPORTUNITY ANNOUNCEMENT</span><span class="dot">//</span>
+    <span>ALN / CFDA</span><span class="dot">//</span>
+    <span>INTERNAL ROUTING FORM</span><span class="dot">//</span>
+    <span>FRASCATI MANUAL</span><span class="dot">//</span>
+    <span>UNIFORM GUIDANCE</span><span class="dot">//</span>
+    <span>HERD SURVEY</span><span class="dot">//</span>
+    <span>BASIC · APPLIED · EXPERIMENTAL</span><span class="dot">//</span>
+    <span>NOTICE OF AWARD</span><span class="dot">//</span>
+    <span>FUNDING OPPORTUNITY ANNOUNCEMENT</span><span class="dot">//</span>
+    <span>ALN / CFDA</span><span class="dot">//</span>
+    <span>INTERNAL ROUTING FORM</span><span class="dot">//</span>
+    <span>FRASCATI MANUAL</span><span class="dot">//</span>
+    <span>UNIFORM GUIDANCE</span><span class="dot">//</span>
+    <span>HERD SURVEY</span><span class="dot">//</span>
+    <span>BASIC · APPLIED · EXPERIMENTAL</span><span class="dot">//</span>
+  </div>
+</section>
 
 <nav class="toc" id="toc">
   <div class="wrap">
@@ -295,11 +352,9 @@
 <section id="problem">
   <div class="wrap reveal">
     <div class="section-head">
-      <div class="icon-badge"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/></svg></div>
-      <div>
-        <h2>What problem are we trying to solve?</h2>
-        <p class="subhead">Start here — before any of the mechanics, this is the situation the framework exists to fix.</p>
-      </div>
+      <div class="kicker"><span class="kicker__num">01</span> Problem</div>
+      <h2>What problem are we trying to solve?</h2>
+      <p class="subhead">Start here — before any of the mechanics, this is the situation the framework exists to fix.</p>
     </div>
     <div class="card">
       <p>
@@ -327,14 +382,13 @@
 <section id="why" class="tint">
   <div class="wrap reveal">
     <div class="section-head">
-      <div class="icon-badge"><svg class="icon" viewBox="0 0 24 24"><path d="M4 20V10M11 20V4M18 20v-7"/></svg></div>
-      <div>
-        <h2>Why R&amp;D classification — and research itself — matters</h2>
-        <p class="subhead">The HERD Survey isn't paperwork. It's how Morgan State's research capacity gets counted.</p>
-      </div>
+      <div class="kicker"><span class="kicker__num">02</span> Why it matters</div>
+      <h2>Why R&amp;D classification — and research itself — matters</h2>
+      <p class="subhead">The HERD Survey isn't paperwork. It's how Morgan State's research capacity gets counted.</p>
     </div>
     <div class="grid2">
       <div class="card feature-card">
+        <span class="idx">/01</span>
         <div class="fi"><svg class="icon" viewBox="0 0 24 24"><path d="M12 2v20M17 6H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
         <div><h3>Federal funding eligibility</h3>
         <p>NIH, NSF, and other federal agencies use HERD data in their allocation models. Higher
@@ -342,6 +396,7 @@
         institutions still building research infrastructure.</p></div>
       </div>
       <div class="card feature-card">
+        <span class="idx">/02</span>
         <div class="fi"><svg class="icon" viewBox="0 0 24 24"><path d="M4 21V11l8-6 8 6v10M9 21v-6h6v6"/></svg></div>
         <div><h3>Institutional rankings</h3>
         <p>HERD data feeds NSF's own R&amp;D expenditure rankings and the Carnegie Classification®
@@ -349,12 +404,14 @@
         the full scope of R&amp;D activity.</p></div>
       </div>
       <div class="card feature-card">
+        <span class="idx">/03</span>
         <div class="fi"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></div>
         <div><h3>Indirect cost (F&amp;A) recovery</h3>
         <p>Facilities and Administrative (F&amp;A) cost rates are calculated in part from R&amp;D
         expenditure. Misclassifying R&amp;D shrinks that base — with direct financial consequences.</p></div>
       </div>
       <div class="card feature-card">
+        <span class="idx">/04</span>
         <div class="fi"><svg class="icon" viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V7l8-4z"/></svg></div>
         <div><h3>Audit and compliance defensibility</h3>
         <p>Because HERD data supports federal reporting obligations, misclassification is a risk in
@@ -367,11 +424,9 @@
 <section id="history">
   <div class="wrap reveal">
     <div class="section-head">
-      <div class="icon-badge"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></div>
-      <div>
-        <h2>A bit of history</h2>
-        <p class="subhead">Where the HERD Survey comes from, and how classification practice has evolved.</p>
-      </div>
+      <div class="kicker"><span class="kicker__num">03</span> History</div>
+      <h2>A bit of history</h2>
+      <p class="subhead">Where the HERD Survey comes from, and how classification practice has evolved.</p>
     </div>
     <div class="card">
       <p>
@@ -414,11 +469,9 @@
 <section id="counts" class="tint">
   <div class="wrap reveal">
     <div class="section-head">
-      <div class="icon-badge"><svg class="icon" viewBox="0 0 24 24"><path d="M9 3v4M15 3v4M4 8h16M6 8v11a2 2 0 002 2h8a2 2 0 002-2V8"/></svg></div>
-      <div>
-        <h2>What counts as R&amp;D — and what doesn't</h2>
-        <p class="subhead">The Frascati Manual (OECD, 2015) definition, as NSF applies it to higher education.</p>
-      </div>
+      <div class="kicker"><span class="kicker__num">04</span> What counts</div>
+      <h2>What counts as R&amp;D — and what doesn't</h2>
+      <p class="subhead">The Frascati Manual (OECD, 2015) definition, as NSF applies it to higher education.</p>
     </div>
     <blockquote class="pull">
       Creative and systematic work undertaken to increase the stock of knowledge, and to devise new
@@ -462,11 +515,9 @@
 <section id="ladder">
   <div class="wrap reveal">
     <div class="section-head">
-      <div class="icon-badge"><svg class="icon" viewBox="0 0 24 24"><path d="M6 21V3M18 21V3M6 7h12M6 12h12M6 17h12"/></svg></div>
-      <div>
-        <h2>The evidence ladder</h2>
-        <p class="subhead">What the five levels do for us — and why climbing toward Level 1 is the goal.</p>
-      </div>
+      <div class="kicker"><span class="kicker__num">05</span> The ladder</div>
+      <h2>The evidence ladder</h2>
+      <p class="subhead">What the five levels do for us — and why climbing toward Level 1 is the goal.</p>
     </div>
     <blockquote class="pull">
       This framework is built around a hierarchy of evidence. The central principle is simple: the
@@ -530,11 +581,9 @@
 <section id="measurement" class="tint">
   <div class="wrap reveal">
     <div class="section-head">
-      <div class="icon-badge"><svg class="icon" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8M21 3h-6v6"/></svg></div>
-      <div>
-        <h2>Measurement: reliability and validity</h2>
-        <p class="subhead">Why a document hierarchy is, in effect, a measurement instrument — and what makes one trustworthy.</p>
-      </div>
+      <div class="kicker"><span class="kicker__num">06</span> Measurement</div>
+      <h2>Measurement: reliability and validity</h2>
+      <p class="subhead">Why a document hierarchy is, in effect, a measurement instrument — and what makes one trustworthy.</p>
     </div>
     <div class="card">
       <p>
@@ -600,14 +649,19 @@
   </div>
 </section>
 
+<section class="manifesto">
+  <div class="wrap">
+    <div class="kicker"><span class="kicker__num">·</span> The point of all this</div>
+    <p>A classification that depends on <span class="hl">who happens to be reviewing it</span> isn't a classification — it's a guess with paperwork.</p>
+  </div>
+</section>
+
 <section id="try-it">
   <div class="wrap reveal">
     <div class="section-head">
-      <div class="icon-badge"><svg class="icon" viewBox="0 0 24 24"><path d="M5 3l14 9-14 9V3z"/></svg></div>
-      <div>
-        <h2>Try it: what level are you standing on?</h2>
-        <p class="subhead">Tell it what you've got. It tells you where the classification lands, and how strong the evidence is.</p>
-      </div>
+      <div class="kicker"><span class="kicker__num">07</span> Try it</div>
+      <h2>Try it: what level are you standing on?</h2>
+      <p class="subhead">Tell it what you've got. It tells you where the classification lands, and how strong the evidence is.</p>
     </div>
     <div class="card" id="wizard">
       <div class="wizard-bar" id="wizard-bar">
@@ -682,11 +736,9 @@
 <section id="glossary" class="tint">
   <div class="wrap reveal">
     <div class="section-head">
-      <div class="icon-badge"><svg class="icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/></svg></div>
-      <div>
-        <h2>Definitions</h2>
-        <p class="subhead">Every acronym used above, in one place. Search or filter by type.</p>
-      </div>
+      <div class="kicker"><span class="kicker__num">08</span> Glossary</div>
+      <h2>Definitions</h2>
+      <p class="subhead">Every acronym used above, in one place. Search or filter by type.</p>
     </div>
     <div class="gloss-controls">
       <input class="gloss-search" id="gloss-search" type="text" placeholder="Search terms…">
@@ -722,11 +774,9 @@
 <section id="gap">
   <div class="wrap reveal">
     <div class="section-head">
-      <div class="icon-badge"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a13 13 0 010 18 13 13 0 010-18z"/></svg></div>
-      <div>
-        <h2>What other institutions are doing</h2>
-        <p class="subhead">This isn't a gap unique to any one type of institution — it's common across research-active universities generally.</p>
-      </div>
+      <div class="kicker"><span class="kicker__num">09</span> The gap</div>
+      <h2>What other institutions are doing</h2>
+      <p class="subhead">This isn't a gap unique to any one type of institution — it's common across research-active universities generally.</p>
     </div>
     <div class="card">
       <p>
@@ -751,11 +801,9 @@
 <section id="practices" class="tint">
   <div class="wrap reveal">
     <div class="section-head">
-      <div class="icon-badge"><svg class="icon" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg></div>
-      <div>
-        <h2>Best practices</h2>
-        <p class="subhead">Habits that keep the framework working year over year.</p>
-      </div>
+      <div class="kicker"><span class="kicker__num">10</span> Best practices</div>
+      <h2>Best practices</h2>
+      <p class="subhead">Habits that keep the framework working year over year.</p>
     </div>
     <div class="card">
       <ul class="tight">
@@ -789,6 +837,19 @@
 
 <script>
 (function(){
+  /* Hero stat counters */
+  document.querySelectorAll('[data-count]').forEach(el => {
+    const target = parseInt(el.dataset.count, 10);
+    const duration = 900;
+    const start = performance.now();
+    function tick(now){
+      const p = Math.min(1, (now - start) / duration);
+      el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  });
+
   /* Scroll reveal */
   const revealEls = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver((entries) => {
