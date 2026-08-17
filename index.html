@@ -107,8 +107,10 @@
     margin-bottom:1rem;
   }
   .kicker__num{
-    display:inline-block; padding:.15rem .5rem; background:var(--orange); color:#fff; font-weight:700;
-    border-radius:3px;
+    display:inline-flex; align-items:center; color:var(--orange); font-weight:700;
+  }
+  .kicker__num::before, .kicker__num::after{
+    content:""; display:inline-block; width:9px; height:2px; background:var(--orange); margin:0 .4rem;
   }
   .section-head h2{ font-size:1.45rem; font-weight:600; margin:0 0 .3rem; }
   .section-head .subhead{ color:var(--muted); margin:0; max-width:58ch; }
@@ -120,7 +122,8 @@
     font-family:var(--font-mono); font-size:.8rem; letter-spacing:.04em; color:#cfdaeb;
     padding:0 1.5rem; white-space:nowrap;
   }
-  .marquee__track .dot{ color:var(--orange-2); }
+  .marquee__track .dot{ color:var(--orange-2); font-weight:700; }
+  .marquee__track .lvl{ color:var(--orange-2); font-weight:700; margin-right:.5rem; }
   @keyframes marquee{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
   @media (prefers-reduced-motion: reduce){ .marquee__track{ animation:none; } }
 
@@ -130,7 +133,10 @@
     font-family:var(--font-head); font-size:clamp(1.4rem, 3.2vw, 2rem); line-height:1.4; margin:0;
     max-width:38ch;
   }
-  .manifesto .hl{ color:var(--orange-2); font-style:italic; }
+  .manifesto .hl{
+    font-style:normal; font-weight:600; color:#fff; padding:0 .1em;
+    background:linear-gradient(transparent 58%, color-mix(in srgb, var(--orange) 65%, transparent) 58%);
+  }
   .manifesto .kicker{ color:#9fb0cc; }
 
   .card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:1.6rem; box-shadow:var(--shadow); }
@@ -273,6 +279,15 @@
   footer a{ color:var(--muted); }
   footer .links{ margin:1rem 0; }
   footer .links a{ margin:0 .4rem; }
+  .footer-docs{ display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; margin:1.5rem 0; text-align:left; }
+  .footer-doc{
+    display:flex; flex-direction:column; gap:.25rem; background:var(--card); border:1px solid var(--line);
+    border-radius:var(--radius); padding:1rem 1.25rem; min-width:220px; text-decoration:none; transition:border-color .15s;
+  }
+  .footer-doc:hover{ border-color:var(--orange); }
+  .footer-doc__label{ font-family:var(--font-head); font-weight:600; color:var(--ink); font-size:.98rem; display:flex; align-items:center; gap:.5rem; }
+  .footer-doc__label .tag{ font-family:var(--font-mono); font-size:.65rem; font-weight:700; color:var(--orange); background:var(--orange-soft); padding:.1rem .4rem; border-radius:3px; }
+  .footer-doc__desc{ font-size:.8rem; color:var(--muted); }
   code{ background:var(--line); padding:.1rem .35rem; border-radius:4px; font-size:.85em; }
 </style>
 </head>
@@ -315,22 +330,16 @@
 
 <section class="marquee" aria-hidden="true">
   <div class="marquee__track">
-    <span>NOTICE OF AWARD</span><span class="dot">//</span>
-    <span>FUNDING OPPORTUNITY ANNOUNCEMENT</span><span class="dot">//</span>
-    <span>ALN / CFDA</span><span class="dot">//</span>
-    <span>INTERNAL ROUTING FORM</span><span class="dot">//</span>
-    <span>FRASCATI MANUAL</span><span class="dot">//</span>
-    <span>UNIFORM GUIDANCE</span><span class="dot">//</span>
-    <span>HERD SURVEY</span><span class="dot">//</span>
-    <span>BASIC · APPLIED · EXPERIMENTAL</span><span class="dot">//</span>
-    <span>NOTICE OF AWARD</span><span class="dot">//</span>
-    <span>FUNDING OPPORTUNITY ANNOUNCEMENT</span><span class="dot">//</span>
-    <span>ALN / CFDA</span><span class="dot">//</span>
-    <span>INTERNAL ROUTING FORM</span><span class="dot">//</span>
-    <span>FRASCATI MANUAL</span><span class="dot">//</span>
-    <span>UNIFORM GUIDANCE</span><span class="dot">//</span>
-    <span>HERD SURVEY</span><span class="dot">//</span>
-    <span>BASIC · APPLIED · EXPERIMENTAL</span><span class="dot">//</span>
+    <span><span class="lvl">L1</span>NOTICE OF AWARD</span><span class="dot">◆</span>
+    <span><span class="lvl">L2</span>FUNDING OPPORTUNITY ANNOUNCEMENT</span><span class="dot">◆</span>
+    <span><span class="lvl">L3</span>ALN / CFDA NUMBER</span><span class="dot">◆</span>
+    <span><span class="lvl">L4</span>SUPPORTING DOCUMENTATION</span><span class="dot">◆</span>
+    <span><span class="lvl">L5</span>INSTITUTIONAL RECORD</span><span class="dot">◆</span>
+    <span><span class="lvl">L1</span>NOTICE OF AWARD</span><span class="dot">◆</span>
+    <span><span class="lvl">L2</span>FUNDING OPPORTUNITY ANNOUNCEMENT</span><span class="dot">◆</span>
+    <span><span class="lvl">L3</span>ALN / CFDA NUMBER</span><span class="dot">◆</span>
+    <span><span class="lvl">L4</span>SUPPORTING DOCUMENTATION</span><span class="dot">◆</span>
+    <span><span class="lvl">L5</span>INSTITUTIONAL RECORD</span><span class="dot">◆</span>
   </div>
 </section>
 
@@ -651,7 +660,7 @@
 
 <section class="manifesto">
   <div class="wrap">
-    <div class="kicker"><span class="kicker__num">·</span> The point of all this</div>
+    <div class="kicker"><span class="kicker__num">◆</span> The point of all this</div>
     <p>A classification that depends on <span class="hl">who happens to be reviewing it</span> isn't a classification — it's a guess with paperwork.</p>
   </div>
 </section>
@@ -823,8 +832,16 @@
     <p>As the HERD Survey evolves and Morgan State's sponsored portfolio
     grows, this framework will be updated. Feedback from ORA staff, faculty PIs, and peers at other
     institutions is welcome.</p>
-    <p><a href="pi-handbook.html">Read the full policy reference</a>, formatted alongside the PI Handbook, or
-    <a href="assets/RD-Classification-Framework.docx" download>download the framework (.docx)</a>.</p>
+    <div class="footer-docs">
+      <a href="pi-handbook.html" class="footer-doc">
+        <span class="footer-doc__label">Policy Reference</span>
+        <span class="footer-doc__desc">The framework as a formal policy document, on the web</span>
+      </a>
+      <a href="assets/RD-Classification-Framework.docx" download class="footer-doc">
+        <span class="footer-doc__label">Framework Document <span class="tag">.docx</span></span>
+        <span class="footer-doc__desc">The full write-up, with ORA's review incorporated</span>
+      </a>
+    </div>
     <div class="links">
       <a href="https://ncses.nsf.gov" target="_blank" rel="noopener">NSF NCSES — HERD Survey</a>·
       <a href="https://www.oecd.org/en/publications/frascati-manual-2015_9789264239012-en.html" target="_blank" rel="noopener">OECD Frascati Manual (2015)</a>·
