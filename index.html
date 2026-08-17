@@ -1,20 +1,625 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>MSU HERD Survey — R&D Evidence Explainer</title>
-  <style>
-    body { font-family: system-ui, sans-serif; max-width: 40rem; margin: 4rem auto; padding: 0 1.5rem; line-height: 1.5; }
-    h1 { font-size: 1.5rem; }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>R&amp;D Evidence Framework — Morgan State University ORA</title>
+<style>
+  :root{
+    --navy:#0b2545; --navy-2:#123a6b; --orange:#e57200; --orange-2:#ffb26b;
+    --bg:#f7f8fa; --card:#ffffff; --ink:#1c2430; --muted:#5b6572; --line:#e2e6ec;
+    --radius:14px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#12161c; --card:#1a2029; --ink:#e8ecf1; --muted:#98a2b0; --line:#2a3240; --navy:#16345e; --navy-2:#1e4c8a; }
+  }
+  :root[data-theme="dark"]{ --bg:#12161c; --card:#1a2029; --ink:#e8ecf1; --muted:#98a2b0; --line:#2a3240; --navy:#16345e; --navy-2:#1e4c8a; }
+  :root[data-theme="light"]{ --bg:#f7f8fa; --card:#ffffff; --ink:#1c2430; --muted:#5b6572; --line:#e2e6ec; --navy:#0b2545; --navy-2:#123a6b; }
+
+  * { box-sizing:border-box; }
+  body{
+    margin:0; font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.6;
+  }
+  a{ color:var(--navy-2); }
+  :root[data-theme="dark"] a, @media (prefers-color-scheme: dark){ a{ color:var(--orange-2); } }
+
+  .wrap{ max-width:920px; margin:0 auto; padding:0 1.5rem; }
+
+  header.hero{
+    background: linear-gradient(135deg, var(--navy), var(--navy-2));
+    color:#fff; padding:4rem 0 3rem;
+  }
+  header.hero .eyebrow{
+    text-transform:uppercase; letter-spacing:.08em; font-size:.8rem; color:var(--orange-2); font-weight:600;
+  }
+  header.hero h1{ font-size:2.1rem; margin:.5rem 0 .75rem; max-width:26ch; }
+  header.hero p.lead{ font-size:1.1rem; max-width:60ch; color:#dbe4f3; }
+  header.hero .byline{ margin-top:2rem; font-size:.9rem; color:#b9c7e0; }
+
+  nav.toc{
+    position:sticky; top:0; z-index:10; background:var(--card); border-bottom:1px solid var(--line);
+    overflow-x:auto; white-space:nowrap;
+  }
+  nav.toc .wrap{ display:flex; gap:1.25rem; padding:.75rem 1.5rem; }
+  nav.toc a{ font-size:.85rem; text-decoration:none; color:var(--muted); font-weight:600; }
+  nav.toc a:hover{ color:var(--orange); }
+
+  section{ padding:3rem 0; border-bottom:1px solid var(--line); }
+  section:last-of-type{ border-bottom:none; }
+  h2{ font-size:1.5rem; margin-bottom:.25rem; }
+  h2 .num{ color:var(--orange); font-variant-numeric:tabular-nums; margin-right:.4rem; }
+  .subhead{ color:var(--muted); margin-top:0; margin-bottom:1.5rem; max-width:60ch; }
+
+  .card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:1.5rem; }
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  .grid3{ display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
+  @media (max-width:700px){ .grid2, .grid3{ grid-template-columns:1fr; } }
+
+  blockquote.pull{
+    border-left:4px solid var(--orange); background:var(--card); padding:1.25rem 1.5rem;
+    margin:1.5rem 0; border-radius:0 var(--radius) var(--radius) 0; font-size:1.05rem;
+  }
+  blockquote.pull cite{ display:block; margin-top:.75rem; font-size:.8rem; color:var(--muted); font-style:normal; }
+
+  .badge{ display:inline-block; font-size:.75rem; font-weight:700; padding:.15rem .55rem; border-radius:999px; }
+  .badge.rd{ background:#dff3e3; color:#136c34; }
+  .badge.nrd{ background:#fbe1e1; color:#9c2626; }
+  :root[data-theme="dark"] .badge.rd{ background:#0f3320; color:#7fe3a2; }
+  :root[data-theme="dark"] .badge.nrd{ background:#3a1616; color:#f0a3a3; }
+
+  /* Ladder */
+  .ladder{ display:flex; flex-direction:column-reverse; gap:.6rem; margin:2rem 0; }
+  .rung{
+    display:grid; grid-template-columns:3.5rem 1fr; gap:1rem; align-items:center;
+    background:var(--card); border:1px solid var(--line); border-radius:10px; padding:1rem 1.25rem;
+    position:relative;
+  }
+  .rung .level{
+    font-weight:800; font-size:1.3rem; color:#fff; width:3.5rem; height:3.5rem; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .rung.l1 .level{ background:var(--orange); }
+  .rung.l2 .level{ background:#e5860a; }
+  .rung.l3 .level{ background:#c78e4a; }
+  .rung.l4 .level{ background:#7a8ba3; }
+  .rung.l5 .level{ background:#5b6572; }
+  .rung h3{ margin:0 0 .2rem; font-size:1.05rem; }
+  .rung p{ margin:0; color:var(--muted); font-size:.92rem; }
+  .ladder-caption{ text-align:center; color:var(--muted); font-size:.85rem; margin-top:-.5rem; }
+  .climb-arrow{ text-align:center; color:var(--orange); font-weight:700; font-size:.85rem; margin:-.3rem 0; }
+
+  /* Glossary */
+  details.gloss{ border-bottom:1px solid var(--line); padding:.75rem 0; }
+  details.gloss summary{ cursor:pointer; font-weight:600; list-style:none; display:flex; justify-content:space-between; }
+  details.gloss summary::-webkit-details-marker{ display:none; }
+  details.gloss summary::after{ content:"+"; color:var(--orange); font-weight:800; }
+  details.gloss[open] summary::after{ content:"–"; }
+  details.gloss p{ color:var(--muted); margin:.5rem 0 0; }
+
+  /* Wizard */
+  #wizard .step{ display:none; }
+  #wizard .step.active{ display:block; }
+  .choice-btn{
+    display:block; width:100%; text-align:left; padding:.9rem 1.1rem; margin:.5rem 0;
+    background:var(--card); border:1px solid var(--line); border-radius:10px; cursor:pointer;
+    font-size:.95rem; color:var(--ink); font-family:inherit;
+  }
+  .choice-btn:hover{ border-color:var(--orange); background:rgba(229,114,0,.06); }
+  .wizard-progress{ font-size:.8rem; color:var(--muted); margin-bottom:.75rem; }
+  .result-box{ border-radius:var(--radius); padding:1.5rem; }
+  .result-box.rd{ background:#dff3e3; color:#0f3320; }
+  .result-box.nrd{ background:#fbe1e1; color:#3a1616; }
+  :root[data-theme="dark"] .result-box.rd{ background:#0f3320; color:#dff3e3; }
+  :root[data-theme="dark"] .result-box.nrd{ background:#3a1616; color:#fbe1e1; }
+  .restart-btn{ margin-top:1rem; background:var(--navy); color:#fff; border:none; padding:.6rem 1.1rem; border-radius:8px; cursor:pointer; font-size:.85rem; }
+
+  /* Then/now icons */
+  .compare{ display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-top:1.5rem; }
+  @media (max-width:700px){ .compare{ grid-template-columns:1fr; } }
+  .compare .col{ text-align:center; }
+  .compare .icon{ font-size:2.5rem; }
+  .compare h4{ margin:.5rem 0 .25rem; }
+  .compare p{ color:var(--muted); font-size:.9rem; }
+
+  ul.tight{ padding-left:1.2rem; }
+  ul.tight li{ margin:.4rem 0; }
+
+  footer{ padding:3rem 0; text-align:center; color:var(--muted); font-size:.85rem; }
+  footer a{ color:var(--muted); }
+  code{ background:var(--line); padding:.1rem .35rem; border-radius:4px; font-size:.85em; }
+</style>
 </head>
 <body>
-  <h1>MSU HERD Survey — R&D Evidence Explainer</h1>
-  <p>
-    This site will host an interactive explainer for the L1–L5 evidence
-    hierarchy used to classify expenditures as R&amp;D for the NSF HERD Survey.
-  </p>
-  <p><em>Content coming soon.</em></p>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Morgan State University · Office of Research Administration</div>
+    <h1>Is this R&amp;D? A framework for classifying sponsored awards for the HERD Survey</h1>
+    <p class="lead">
+      Every year, Morgan State reports its research and development (R&amp;D) spending to the
+      National Science Foundation. This site walks through the five-level evidence framework
+      the Office of Research Administration built to answer one question consistently:
+      <em>should this award count as R&amp;D?</em>
+    </p>
+    <div class="byline">Prepared by Ayomide Ajibola, MBA · Grant Associate, Office of Research Administration</div>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="wrap">
+    <a href="#problem">The Problem</a>
+    <a href="#why">Why It Matters</a>
+    <a href="#history">History</a>
+    <a href="#counts">What Counts</a>
+    <a href="#ladder">The Ladder</a>
+    <a href="#measurement">Measurement</a>
+    <a href="#try-it">Try It</a>
+    <a href="#glossary">Glossary</a>
+    <a href="#gap">The Gap</a>
+    <a href="#practices">Best Practices</a>
+  </div>
+</nav>
+
+<section id="problem">
+  <div class="wrap">
+    <h2><span class="num">01</span>What problem are we trying to solve?</h2>
+    <p class="subhead">Start here — before any of the mechanics, this is the situation the framework exists to fix.</p>
+    <div class="card">
+      <p>
+        Someone in the Office of Research Administration is looking at a sponsored award. Somewhere,
+        a form or a spreadsheet needs a single answer: <strong>is this Research &amp; Development, or isn't it?</strong>
+        That answer feeds directly into what Morgan State reports to the National Science Foundation
+        (NSF) every year through the Higher Education Research and Development (HERD) Survey.
+      </p>
+      <p>
+        Historically, that answer has come from judgment — whichever agency funded the award, or
+        whatever was decided the year before. Not every dollar is obviously R&amp;D. Some awards
+        clearly are. Some are training, or service, or somewhere in between. If two different people
+        classify the same award differently, the number Morgan State reports wobbles, and it becomes
+        very hard to defend under audit.
+      </p>
+      <p>
+        This framework replaces "go interpret it yourself" with a repeatable process: tell it what
+        evidence you have, and it tells you where that evidence lands — and how confident you should be
+        in the answer.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section id="why">
+  <div class="wrap">
+    <h2><span class="num">02</span>Why R&amp;D classification — and research itself — matters</h2>
+    <p class="subhead">The HERD Survey isn't paperwork. It's how Morgan State's research capacity gets counted.</p>
+    <div class="grid2">
+      <div class="card">
+        <h3>Federal funding eligibility</h3>
+        <p>The National Institutes of Health (NIH), NSF, and other federal agencies use HERD data in
+        their allocation models. Higher reported R&amp;D expenditures open access to funding
+        programs — including some specifically for institutions building research infrastructure,
+        and others aimed at institutions still building that capacity.</p>
+      </div>
+      <div class="card">
+        <h3>Institutional rankings</h3>
+        <p>HERD data feeds NSF's own R&amp;D expenditure rankings and the Carnegie Classification®
+        system. Morgan State's standing as a Doctoral University with High Research Activity depends
+        in part on accurately capturing the full scope of R&amp;D activity across the institution.</p>
+      </div>
+      <div class="card">
+        <h3>Indirect cost (F&amp;A) recovery</h3>
+        <p>Facilities and Administrative (F&amp;A) cost rates are calculated in part from R&amp;D
+        expenditure. Classifying R&amp;D activity as non-R&amp;D shrinks that base — with direct
+        financial consequences for recovering research infrastructure costs.</p>
+      </div>
+      <div class="card">
+        <h3>Audit and compliance defensibility</h3>
+        <p>Because HERD data supports federal reporting obligations, misclassification is a compliance
+        risk in either direction. An evidence-based methodology — one that points to a named document
+        instead of a hunch — is the strongest defense if that classification is ever questioned.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="history">
+  <div class="wrap">
+    <h2><span class="num">03</span>A bit of history</h2>
+    <p class="subhead">Where the HERD Survey comes from, and how classification practice has evolved.</p>
+    <div class="card">
+      <p>
+        The HERD Survey is run annually by NSF's National Center for Science and Engineering
+        Statistics (NCSES) and is the primary national source of data on R&amp;D spending at U.S.
+        colleges and universities — collecting data from more than 900 institutions every year. Any
+        institution spending at least $150,000 on separately budgeted R&amp;D must report.
+      </p>
+      <p>
+        The definitions behind the survey trace back to the <strong>Frascati Manual</strong>, first
+        published by the Organisation for Economic Co-operation and Development (OECD) in 1963 and
+        revised many times since (most recently in 2015), as the international standard for measuring
+        R&amp;D. NSF's HERD Survey — and its predecessor surveys dating to the 1970s — adopted that
+        definition to keep U.S. reporting comparable across institutions and, internationally, across
+        countries.
+      </p>
+      <p>
+        What has <em>not</em> historically existed at most institutions, Morgan State included, is a
+        documented, repeatable method for deciding whether an individual award meets that definition.
+      </p>
+    </div>
+    <div class="compare">
+      <div class="col">
+        <div class="icon">🗂️</div>
+        <h4>Before</h4>
+        <p>Classification by memory, sponsor name, or "however we did it last year" — undocumented,
+        and hard to defend when someone asks why.</p>
+      </div>
+      <div class="col">
+        <div class="icon">🧭</div>
+        <h4>Now</h4>
+        <p>A five-level, document-anchored process — every classification traceable to a specific,
+        retrievable source.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="counts">
+  <div class="wrap">
+    <h2><span class="num">04</span>What counts as R&amp;D — and what doesn't</h2>
+    <p class="subhead">The Frascati Manual (OECD, 2015) definition, as NSF applies it to higher education.</p>
+    <blockquote class="pull">
+      "Creative and systematic work undertaken to increase the stock of knowledge, and to devise new
+      applications of that knowledge."
+      <cite>— Frascati Manual, OECD (2015)</cite>
+    </blockquote>
+    <div class="grid3">
+      <div class="card">
+        <h3>Basic Research</h3>
+        <p>Pursuing new knowledge with no specific application in mind.</p>
+        <p style="color:var(--muted); font-size:.85rem;">e.g. theoretical physics, fundamental genetics, mathematical modeling</p>
+      </div>
+      <div class="card">
+        <h3>Applied Research</h3>
+        <p>Investigation aimed at a specific practical objective.</p>
+        <p style="color:var(--muted); font-size:.85rem;">e.g. health disparities, cybersecurity, climate adaptation</p>
+      </div>
+      <div class="card">
+        <h3>Experimental Development</h3>
+        <p>Using research knowledge to develop or improve a product or process.</p>
+        <p style="color:var(--muted); font-size:.85rem;">e.g. diagnostic tool prototypes built from research findings</p>
+      </div>
+    </div>
+    <p><strong>Key test:</strong> is the primary purpose of the award to generate new knowledge?
+    If yes, it's R&amp;D. If no, it isn't — regardless of which agency funded it.</p>
+    <div class="card">
+      <h3>What is NOT R&amp;D</h3>
+      <p>The following are generally not R&amp;D, even when funded by an agency known primarily for research:
+      workforce development and training programs; service delivery contracts; equipment and infrastructure
+      grants (unless the equipment is integral to a specific research project); educational curriculum
+      development (unless the curriculum itself is the object of study); institutional capacity-building
+      without a defined research objective; and conference or dissemination grants, unless the funding
+      agency itself classifies the conference as R&amp;D.</p>
+      <p style="color:var(--muted); font-size:.9rem;">Many awards blend activities. When they do, the
+      <em>primary</em> purpose stated in the Notice of Award and funding opportunity governs the
+      classification.</p>
+    </div>
+  </div>
+</section>
+
+<section id="ladder">
+  <div class="wrap">
+    <h2><span class="num">05</span>The evidence ladder</h2>
+    <p class="subhead">What the five levels do for us — and why climbing toward Level 1 is the goal.</p>
+    <blockquote class="pull">
+      This framework is built around a hierarchy of evidence. The central principle is simple: the
+      strongest evidence for whether a sponsored award constitutes R&amp;D is the award document
+      itself. When the award is clear, classification begins and ends there. When it isn't, the
+      reviewer works systematically down the ladder until a supported determination can be made.
+      This hierarchical approach has two practical advantages: it is <strong>efficient</strong> —
+      reviewers stop at the first level that gives a conclusive answer — and it is
+      <strong>defensible</strong> — the classification is always traceable to a specific, named
+      source that can be produced under audit.
+    </blockquote>
+    <p class="climb-arrow">↑ stronger evidence, climb toward Level 1 ↑</p>
+    <div class="ladder">
+      <div class="rung l5">
+        <div class="level">L5</div>
+        <div><h3>Institutional Record</h3>
+        <p>Grant management system records, prior HERD listing, fund account type. Last resort — used only when nothing stronger is accessible.</p></div>
+      </div>
+      <div class="rung l4">
+        <div class="level">L4</div>
+        <div><h3>Supporting Documentation</h3>
+        <p>Internal Routing Form (IRF), proposal or Statement of Work (SOW), Letter of Intent (LOI), or a written PI statement.</p></div>
+      </div>
+      <div class="rung l3">
+        <div class="level">L3</div>
+        <div><h3>ALN / CFDA Number</h3>
+        <p>The federal program's listing on SAM.gov — program-level activity type, used when the award itself is silent.</p></div>
+      </div>
+      <div class="rung l2">
+        <div class="level">L2</div>
+        <div><h3>Funding Opportunity Announcement (FOA / RFA)</h3>
+        <p>The solicitation the award was made under — defines the program's research intent up front.</p></div>
+      </div>
+      <div class="rung l1">
+        <div class="level">L1</div>
+        <div><h3>Notice of Award (NOA)</h3>
+        <p>The award document itself — the strongest and most direct evidence of what the award funds.</p></div>
+      </div>
+    </div>
+    <p class="ladder-caption">A grant classified at Level 1 has the strongest evidence base. A grant
+    classified at Level 5 has the weakest — not because the classification is wrong, but because the
+    documentation behind it is more indirect.</p>
+    <div class="card">
+      <p style="margin:0"><strong>Important:</strong> Federal Notices of Award are required under
+      Uniform Guidance (2 CFR Part 200) to directly indicate whether an award is research. Before
+      doing any inferential reading of the NOA's language, look first for that direct indication —
+      NSF, NIH, and NASA notices all answer the "Is this R&amp;D?" question explicitly. The keyword
+      search described in Level 1 below is a fallback for when that direct answer isn't present, not
+      the first move.</p>
+    </div>
+  </div>
+</section>
+
+<section id="measurement">
+  <div class="wrap">
+    <h2><span class="num">06</span>Measurement: reliability and validity</h2>
+    <p class="subhead">Why a document hierarchy is, in effect, a measurement instrument — and what makes a measurement instrument trustworthy.</p>
+    <div class="card">
+      <p>
+        In research methodology, a good measurement has two separate properties, and it's easy to
+        have one without the other:
+      </p>
+      <div class="grid2">
+        <div>
+          <h3>Reliability</h3>
+          <p>Would two different people, looking at the same award, reach the <em>same</em>
+          classification? A reliable process doesn't depend on who happens to be reviewing it.</p>
+        </div>
+        <div>
+          <h3>Validity</h3>
+          <p>Is the classification actually true to what NSF and the Frascati Manual mean by
+          "R&amp;D"? A process can be perfectly consistent and still be consistently
+          <em>wrong</em> — reliable without being valid.</p>
+        </div>
+      </div>
+      <p>
+        The five-level ladder is designed to improve both at once. It improves <strong>reliability</strong>
+        because every reviewer starts at the same place (the NOA) and works down the same sequence in
+        the same order — the outcome depends on the evidence, not on individual habit or guesswork.
+        It improves <strong>validity</strong> because each level is anchored to a document authored by
+        the funding agency itself — closer to the federal government's own definition of the award —
+        rather than to institutional memory, a sponsor-name shortcut, or an assumption carried forward
+        from a prior year.
+      </p>
+      <p style="color:var(--muted); font-size:.92rem;">
+        In short: the ladder isn't paperwork for its own sake. It's what turns "is this R&amp;D?"
+        from a judgment call into something closer to a scientific measurement — one where the answer
+        holds up no matter who is asking the question.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section id="try-it">
+  <div class="wrap">
+    <h2><span class="num">07</span>Try it: what level are you standing on?</h2>
+    <p class="subhead">Tell it what you've got. It tells you where the classification lands, and how strong the evidence is.</p>
+    <div class="card" id="wizard">
+      <div class="wizard-progress" id="wizard-progress">Step 1 of 5</div>
+
+      <div class="step active" data-step="noa-exists">
+        <p><strong>Do you have the Notice of Award (NOA) — the award document from the sponsor?</strong></p>
+        <button class="choice-btn" data-next="noa-direct">Yes, I have it</button>
+        <button class="choice-btn" data-next="foa-exists">No / not yet</button>
+      </div>
+
+      <div class="step" data-step="noa-direct">
+        <p><strong>Does the NOA directly state whether this is research?</strong> (Federal NOAs are
+        required under Uniform Guidance to answer this — check for an explicit "Is this R&amp;D?" or
+        activity-type field before anything else.)</p>
+        <button class="choice-btn" data-result="rd" data-level="1" data-basis="Direct indication on the NOA">Yes — it's marked R&amp;D</button>
+        <button class="choice-btn" data-result="nrd" data-level="1" data-basis="Direct indication on the NOA">Yes — it's marked Not R&amp;D / instruction / training</button>
+        <button class="choice-btn" data-next="noa-language">No direct indicator on the form</button>
+      </div>
+
+      <div class="step" data-step="noa-language">
+        <p><strong>Look at the purpose language in the NOA itself.</strong> Does it describe research,
+        study, investigation, hypothesis-driven work, or new-knowledge generation — or does it describe
+        service delivery, training, outreach, technical assistance, or infrastructure?</p>
+        <button class="choice-btn" data-result="rd" data-level="1" data-basis="NOA purpose language (inferential)">Research-type language</button>
+        <button class="choice-btn" data-result="nrd" data-level="1" data-basis="NOA purpose language (inferential)">Service/training/infrastructure language</button>
+        <button class="choice-btn" data-next="foa-exists">Still unclear</button>
+      </div>
+
+      <div class="step" data-step="foa-exists">
+        <p><strong>Do you have the Funding Opportunity Announcement (FOA / RFA) the award was made under?</strong></p>
+        <button class="choice-btn" data-next="foa-language">Yes</button>
+        <button class="choice-btn" data-next="aln-exists">No / not available</button>
+      </div>
+
+      <div class="step" data-step="foa-language">
+        <p><strong>Does the solicitation describe the program as funding research or knowledge
+        generation — or does the agency legislate the whole program as R&amp;D (as NSF generally does)?</strong></p>
+        <button class="choice-btn" data-result="rd" data-level="2" data-basis="Funding Opportunity Announcement">Yes, research intent is clear</button>
+        <button class="choice-btn" data-result="nrd" data-level="2" data-basis="Funding Opportunity Announcement">No, it's service/training oriented</button>
+        <button class="choice-btn" data-next="aln-exists">Still unclear</button>
+      </div>
+
+      <div class="step" data-step="aln-exists">
+        <p><strong>Look up the ALN / CFDA number at <a href="https://sam.gov/fal" target="_blank" rel="noopener">sam.gov/fal</a>. Which best describes the program?</strong></p>
+        <button class="choice-btn" data-result="rd" data-level="3" data-basis="ALN/CFDA program listing">NSF 47.xxx, or objectives describe research/knowledge generation</button>
+        <button class="choice-btn" data-result="nrd" data-level="3" data-basis="ALN/CFDA program listing">DHHS 93.5xx–93.6xx, or objectives describe services/training</button>
+        <button class="choice-btn" data-next="irf">NIH 93.xxx, DOD 12.xxx, or still unclear — needs case-by-case review</button>
+      </div>
+
+      <div class="step" data-step="irf">
+        <p><strong>Check the Internal Routing Form (IRF) or proposal/Statement of Work. Is
+        "Research &amp; Development" checked (vs. Instruction/Training), with a hypothesis, data
+        collection and analysis, or a stated plan to publish?</strong></p>
+        <button class="choice-btn" data-result="rd" data-level="4" data-basis="Internal Routing Form / proposal review">Yes — R&amp;D box checked, research character present</button>
+        <button class="choice-btn" data-result="nrd" data-level="4" data-basis="Internal Routing Form / proposal review">No — outreach or instruction only</button>
+        <button class="choice-btn" data-next="l5">Still unclear / documentation unavailable</button>
+      </div>
+
+      <div class="step" data-step="l5">
+        <p><strong>Use the institutional record</strong> — grant management system, prior HERD listing,
+        or fund account type designation — as a last resort.</p>
+        <button class="choice-btn" data-result="unclear" data-level="5" data-basis="Institutional record (last resort)">See result</button>
+      </div>
+
+      <div id="wizard-result" style="display:none;"></div>
+      <button class="restart-btn" id="wizard-restart" style="display:none;">Start over</button>
+    </div>
+  </div>
+</section>
+
+<section id="glossary">
+  <div class="wrap">
+    <h2><span class="num">08</span>Definitions</h2>
+    <p class="subhead">Every acronym used above, in one place.</p>
+    <div class="card">
+      <details class="gloss"><summary>HERD — Higher Education Research and Development Survey</summary><p>NSF's annual survey measuring R&amp;D expenditures at U.S. colleges and universities.</p></details>
+      <details class="gloss"><summary>NSF — National Science Foundation</summary><p>The federal agency that administers the HERD Survey and funds research across all fields of science and engineering.</p></details>
+      <details class="gloss"><summary>NCSES — National Center for Science and Engineering Statistics</summary><p>The statistical unit within NSF that runs the HERD Survey.</p></details>
+      <details class="gloss"><summary>OECD — Organisation for Economic Co-operation and Development</summary><p>Publisher of the Frascati Manual, the international standard defining R&amp;D.</p></details>
+      <details class="gloss"><summary>NOA — Notice of Award</summary><p>The official document a sponsor issues to formally grant an award, including its purpose, amount, and terms.</p></details>
+      <details class="gloss"><summary>FOA / RFA — Funding Opportunity Announcement / Request for Applications</summary><p>The public solicitation under which an award is made (NIH uses RFA/RFP; NSF and DOE use FOA).</p></details>
+      <details class="gloss"><summary>ALN / CFDA — Assistance Listings Number / Catalog of Federal Domestic Assistance</summary><p>A five-digit federal program identifier (format XX.XXX). Renamed from CFDA to ALN in 2021 under the DATA Act; both terms remain in use. Looked up at sam.gov/fal.</p></details>
+      <details class="gloss"><summary>IRF — Internal Routing Form</summary><p>The internal form a PI completes when submitting a proposal, including an activity-type declaration.</p></details>
+      <details class="gloss"><summary>SOW — Statement of Work</summary><p>The section of an award or proposal describing the specific work to be performed.</p></details>
+      <details class="gloss"><summary>LOI — Letter of Intent</summary><p>An early document sent to a sponsor signaling intent to apply, sometimes describing project purpose.</p></details>
+      <details class="gloss"><summary>F&amp;A — Facilities and Administrative (costs)</summary><p>Indirect costs recovered on sponsored awards; the recovery rate is calculated in part from R&amp;D expenditure.</p></details>
+      <details class="gloss"><summary>DOE — Department of Energy</summary><p>Federal agency funding scientific research, largely through its Office of Science.</p></details>
+      <details class="gloss"><summary>DOD — Department of Defense</summary><p>Federal agency funding both basic/applied research and non-research service contracts.</p></details>
+      <details class="gloss"><summary>DHHS — Department of Health and Human Services</summary><p>Parent agency of NIH; also funds many service- and training-oriented programs.</p></details>
+      <details class="gloss"><summary>NIH — National Institutes of Health</summary><p>Federal biomedical research agency within DHHS; funds a mix of research and training programs.</p></details>
+      <details class="gloss"><summary>HBCU — Historically Black College or University</summary><p>An institution of higher education established before 1964 with the principal mission of educating Black Americans.</p></details>
+      <details class="gloss"><summary>MSI — Minority-Serving Institution</summary><p>A federal designation for institutions enrolling significant proportions of minority students.</p></details>
+      <details class="gloss"><summary>Uniform Guidance — 2 CFR Part 200</summary><p>The federal regulations governing grants administration, including the requirement that federal NOAs indicate R&amp;D status directly.</p></details>
+      <details class="gloss"><summary>Carnegie Classification®</summary><p>The framework used to categorize U.S. colleges and universities by research activity, among other factors.</p></details>
+    </div>
+  </div>
+</section>
+
+<section id="gap">
+  <div class="wrap">
+    <h2><span class="num">09</span>What other institutions are doing</h2>
+    <p class="subhead">This isn't a gap unique to any one type of institution — it's common across research-active universities generally.</p>
+    <div class="card">
+      <p>
+        Most research-intensive institutions do not have procedural documentation like this for HERD
+        classification — the practice is informal almost everywhere. Common shortcuts include
+        classifying by sponsor name alone (NSF or NIH = automatically R&amp;D), relying on PI
+        self-classification with no independent check, or simply carrying forward the prior year's
+        listing without review. Each approach is fast, and each is prone to error in both directions.
+      </p>
+      <p>
+        Morgan State's five-level framework — every determination tied to a named, retrievable
+        document — goes beyond what most peer institutions have formally published. Organizations
+        including NCURA (National Council of University Research Administrators), AURA (Association
+        of University Research Administrators), and SRAI (Society of Research Administrators
+        International) have all published guidance emphasizing award-level documentation over
+        sponsor-based shortcuts; this framework is a concrete, adoptable methodology in that spirit.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section id="practices">
+  <div class="wrap">
+    <h2><span class="num">10</span>Best practices</h2>
+    <div class="card">
+      <ul class="tight">
+        <li>Always start with the NOA, and look first for a direct research indicator before reading
+        into its language.</li>
+        <li>Build an NOA file for every active award, filed electronically somewhere accessible during
+        HERD review.</li>
+        <li>Document every determination — a note as short as "NOA reviewed, direct R&amp;D indicator
+        present, classified R&amp;D" takes thirty seconds and provides real protection under audit.</li>
+        <li>Don't assume based on agency alone: NIH funds training programs, NSF funds education
+        programs, and DOD funds service contracts alongside their research portfolios.</li>
+        <li>Flag borderline awards early, and start a Level 2–4 review before the HERD reporting
+        cycle, not during it.</li>
+        <li>Keep the classification file living — revisit it when an award's scope changes through a
+        modification or supplement.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>This is a living document. As the HERD Survey evolves and Morgan State's sponsored portfolio
+    grows, this framework will be updated. Feedback from ORA staff, faculty PIs, and peers at other
+    institutions is welcome.</p>
+    <p>
+      References:
+      <a href="https://ncses.nsf.gov" target="_blank" rel="noopener">NSF NCSES — HERD Survey</a> ·
+      <a href="https://www.oecd.org/en/publications/frascati-manual-2015_9789264239012-en.html" target="_blank" rel="noopener">OECD Frascati Manual (2015)</a> ·
+      <a href="https://www.ecfr.gov/current/title-2/subtitle-A/chapter-II/part-200" target="_blank" rel="noopener">2 CFR Part 200 (Uniform Guidance)</a> ·
+      <a href="https://sam.gov/fal" target="_blank" rel="noopener">SAM.gov Assistance Listings</a>
+    </p>
+    <p>Ayomide Ajibola, MBA · Office of Research Administration · Morgan State University</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const steps = document.querySelectorAll('#wizard .step');
+  const progress = document.getElementById('wizard-progress');
+  const resultBox = document.getElementById('wizard-result');
+  const restartBtn = document.getElementById('wizard-restart');
+  const order = ['noa-exists','noa-direct','noa-language','foa-exists','foa-language','aln-exists','irf','l5'];
+
+  function showStep(name){
+    steps.forEach(s => s.classList.toggle('active', s.dataset.step === name));
+    const idx = order.indexOf(name);
+    progress.textContent = `Step ${idx+1} of ${order.length}`;
+  }
+
+  function showResult(kind, level, basis){
+    steps.forEach(s => s.classList.remove('active'));
+    progress.textContent = '';
+    resultBox.style.display = 'block';
+    restartBtn.style.display = 'inline-block';
+    if (kind === 'unclear') {
+      resultBox.className = 'result-box nrd';
+      resultBox.innerHTML = `<h3>Level 5 — Institutional Record</h3>
+        <p>No stronger documentation was accessible, so classification falls back to institutional
+        record (grant system, prior HERD listing, or fund account type). That's honest, expected for
+        a first pass, and exactly what Level 5 is for — flag this award to gather stronger
+        documentation (NOA, FOA, or IRF) before next year's cycle so it can move up the ladder.</p>`;
+      return;
+    }
+    const isRD = kind === 'rd';
+    resultBox.className = 'result-box ' + (isRD ? 'rd' : 'nrd');
+    resultBox.innerHTML = `<h3><span class="badge ${isRD ? 'rd' : 'nrd'}">${isRD ? 'R&D' : 'Not R&D'}</span> — Level ${level}</h3>
+      <p><strong>Basis:</strong> ${basis}</p>
+      <p>Record this basis in the award's classification file — that's what makes the determination
+      defensible later.</p>`;
+  }
+
+  document.querySelectorAll('.choice-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (btn.dataset.result) {
+        showResult(btn.dataset.result, btn.dataset.level, btn.dataset.basis);
+      } else if (btn.dataset.next) {
+        showStep(btn.dataset.next);
+      }
+    });
+  });
+
+  restartBtn.addEventListener('click', () => {
+    resultBox.style.display = 'none';
+    restartBtn.style.display = 'none';
+    showStep('noa-exists');
+  });
+
+  showStep('noa-exists');
+})();
+</script>
+
 </body>
 </html>
