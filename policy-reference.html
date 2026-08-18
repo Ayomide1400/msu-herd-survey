@@ -38,15 +38,22 @@
   .toolbar .meta{ font-size:.8rem; color:var(--muted); }
   .dl-btn{ display:inline-flex; align-items:center; gap:.4rem; background:var(--orange); color:#fff; text-decoration:none; font-size:.85rem; font-weight:600; padding:.5rem 1rem; border-radius:6px; }
 
-  main.wrap{ max-width:760px; margin:0 auto; padding:2.5rem 1.5rem 5rem; }
+  main.wrap{ max-width:1060px; margin:0 auto; padding:2.5rem 1.5rem 5rem; }
+  .doc-layout{ display:grid; grid-template-columns:1fr 260px; gap:3rem; align-items:start; }
+  @media (max-width:860px){ .doc-layout{ grid-template-columns:1fr; } }
+  .doc-content{ min-width:0; max-width:760px; }
 
-  nav.doc-toc{ background:var(--orange-soft); border:1px solid var(--line); border-radius:var(--radius); padding:1.25rem 1.5rem; margin-bottom:2.5rem; }
-  nav.doc-toc h2{ font-size:.95rem; margin:0 0 .75rem; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); font-family:var(--font-body); font-weight:700; }
-  nav.doc-toc ol{ margin:0; padding-left:0; list-style:none; columns:2; column-gap:2rem; font-size:.88rem; }
-  nav.doc-toc li{ margin:.35rem 0; break-inside:avoid; }
-  nav.doc-toc a{ text-decoration:none; }
-  nav.doc-toc a:hover{ text-decoration:underline; }
-  @media (max-width:600px){ nav.doc-toc ol{ columns:1; } }
+  .doc-sidebar{ position:sticky; top:4.5rem; display:flex; flex-direction:column; gap:1.25rem; }
+  @media (max-width:860px){ .doc-sidebar{ position:static; } }
+  .side-card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.3rem; }
+  .side-card h3{ font-size:.78rem; margin:0 0 .75rem; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); font-family:var(--font-body); font-weight:700; }
+  .side-card ul{ margin:0; padding-left:0; list-style:none; font-size:.85rem; }
+  .side-card li{ margin:.5rem 0; }
+  .side-card a{ text-decoration:none; }
+  .side-card a:hover{ text-decoration:underline; }
+  #on-this-page ul ul{ margin:.4rem 0 .4rem 1rem; padding-left:.5rem; border-left:2px solid var(--line); }
+  #on-this-page > ul > li{ font-weight:600; }
+  #on-this-page ul ul li{ font-weight:400; }
 
   section.doc-section{ margin-bottom:2.75rem; scroll-margin-top:4.5rem; }
   section.doc-section h2{ font-size:1.35rem; border-bottom:2px solid var(--orange-soft); padding-bottom:.5rem; margin-bottom:1rem; }
@@ -64,7 +71,18 @@
   .quote{ font-style:italic; border-left:3px solid var(--line); padding-left:1rem; color:var(--muted); }
   .authority{ font-size:.8rem; color:var(--muted); margin-top:.5rem; }
 
-  footer.doc-footer{ border-top:1px solid var(--line); padding:2.5rem 1.5rem; text-align:center; color:var(--muted); font-size:.85rem; }
+  footer.doc-footer{ background:var(--navy); color:#cdd7e6; margin-top:2rem; }
+  .footer-main{ max-width:1060px; margin:0 auto; padding:3rem 1.5rem; display:grid; grid-template-columns:repeat(4,1fr); gap:2rem; }
+  @media (max-width:700px){ .footer-main{ grid-template-columns:1fr 1fr; } }
+  .footer-main h4{ font-family:var(--font-body); font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:#8fa3c4; margin:0 0 .9rem; }
+  .footer-main ul{ list-style:none; margin:0; padding:0; font-size:.88rem; }
+  .footer-main li{ margin:.5rem 0; }
+  .footer-main a{ color:#dbe4f3; text-decoration:none; }
+  .footer-main a:hover{ text-decoration:underline; }
+  .footer-main p{ margin:0 0 .5rem; font-size:.88rem; color:#dbe4f3; }
+  .footer-base{ border-top:1px solid rgba(255,255,255,.12); }
+  .footer-base .wrap{ max-width:1060px; margin:0 auto; padding:1.25rem 1.5rem; display:flex; align-items:center; gap:.6rem; font-size:.8rem; color:#8fa3c4; }
+  .footer-base svg{ flex:none; }
 </style>
 </head>
 <body>
@@ -89,24 +107,8 @@
 </div>
 
 <main class="wrap">
-
-  <nav class="doc-toc" aria-label="Table of contents">
-    <h2>Contents</h2>
-    <ol>
-      <li><a href="#summary">Executive Summary</a></li>
-      <li><a href="#intro">1. Introduction</a></li>
-      <li><a href="#defining">2. Defining R&amp;D</a></li>
-      <li><a href="#why">3. Why Classification Matters</a></li>
-      <li><a href="#framework">4. The Five-Level Framework</a></li>
-      <li><a href="#process">5. The Determination Process</a></li>
-      <li><a href="#herd">6. HERD Survey Requirements</a></li>
-      <li><a href="#others">7. What Other Institutions Do</a></li>
-      <li><a href="#examples">8. Examples</a></li>
-      <li><a href="#practices">9. Best Practices</a></li>
-      <li><a href="#conclusion">10. Conclusion</a></li>
-      <li><a href="#checklist">Appendix. Checklist</a></li>
-    </ol>
-  </nav>
+<div class="doc-layout">
+<div class="doc-content">
 
   <section class="doc-section" id="summary">
     <h2>Executive Summary</h2>
@@ -293,11 +295,92 @@
     </table>
   </section>
 
+</div>
+
+<aside class="doc-sidebar">
+  <nav class="side-card" id="on-this-page" aria-label="Table of contents">
+    <h3>On This Page</h3>
+    <ul>
+      <li><a href="#summary">Executive Summary</a></li>
+      <li><a href="#intro">1. Introduction</a></li>
+      <li><a href="#defining">2. Defining R&amp;D</a></li>
+      <li><a href="#why">3. Why Classification Matters</a></li>
+      <li><a href="#framework">4. The Five-Level Framework</a></li>
+      <li><a href="#process">5. The Determination Process</a></li>
+      <li><a href="#herd">6. HERD Survey Requirements</a></li>
+      <li><a href="#others">7. What Other Institutions Do</a></li>
+      <li><a href="#examples">8. Examples</a></li>
+      <li><a href="#practices">9. Best Practices</a></li>
+      <li><a href="#conclusion">10. Conclusion</a></li>
+      <li><a href="#checklist">Appendix. Checklist</a></li>
+    </ul>
+  </nav>
+
+  <div class="side-card">
+    <h3>This Framework</h3>
+    <ul>
+      <li><a href="index.html">▶ Interactive classifier</a></li>
+      <li><a href="assets/RD-Classification-Framework.docx" download>Download (.docx)</a></li>
+      <li><a href="https://github.com/Ayomide1400/msu-herd-survey" target="_blank" rel="noopener">View on GitHub</a></li>
+    </ul>
+  </div>
+
+  <div class="side-card">
+    <h3>References</h3>
+    <ul>
+      <li><a href="https://ncses.nsf.gov" target="_blank" rel="noopener">NSF NCSES — HERD Survey</a></li>
+      <li><a href="https://www.oecd.org/en/publications/frascati-manual-2015_9789264239012-en.html" target="_blank" rel="noopener">OECD Frascati Manual (2015)</a></li>
+      <li><a href="https://www.ecfr.gov/current/title-2/subtitle-A/chapter-II/part-200" target="_blank" rel="noopener">2 CFR Part 200 (Uniform Guidance)</a></li>
+      <li><a href="https://sam.gov/fal" target="_blank" rel="noopener">SAM.gov Assistance Listings</a></li>
+    </ul>
+  </div>
+</aside>
+
+</div>
 </main>
 
 <footer class="doc-footer">
-  <p>Office of Research Administration · Morgan State University</p>
-  <p><a href="index.html">← Back to the interactive classifier</a></p>
+  <div class="footer-main">
+    <div>
+      <h4>Office</h4>
+      <p>Office of Research Administration<br>Morgan State University</p>
+      <ul>
+        <li><a href="https://www.morgan.edu/ora" target="_blank" rel="noopener">morgan.edu/ora</a></li>
+        <li><a href="mailto:ask.ora@morgan.edu">ask.ora@morgan.edu</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>This Framework</h4>
+      <ul>
+        <li><a href="index.html">Interactive classifier</a></li>
+        <li><a href="assets/RD-Classification-Framework.docx" download>Download (.docx)</a></li>
+        <li><a href="https://github.com/Ayomide1400/msu-herd-survey" target="_blank" rel="noopener">View on GitHub</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>References</h4>
+      <ul>
+        <li><a href="https://ncses.nsf.gov" target="_blank" rel="noopener">NSF NCSES — HERD Survey</a></li>
+        <li><a href="https://www.oecd.org/en/publications/frascati-manual-2015_9789264239012-en.html" target="_blank" rel="noopener">OECD Frascati Manual</a></li>
+        <li><a href="https://www.ecfr.gov/current/title-2/subtitle-A/chapter-II/part-200" target="_blank" rel="noopener">2 CFR Part 200</a></li>
+        <li><a href="https://sam.gov/fal" target="_blank" rel="noopener">SAM.gov Assistance Listings</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Morgan State</h4>
+      <ul>
+        <li><a href="https://www.morgan.edu" target="_blank" rel="noopener">Morgan State University</a></li>
+        <li><a href="https://www.morgan.edu/Documents/ADMINISTRATION/OFFICES/ora/PI/2024-07-01_PIHandbook5.pdf" target="_blank" rel="noopener">PI Handbook (Part 5)</a></li>
+        <li><a href="https://www.morgan.edu/office-of-research-administration/policies-and-guidelines" target="_blank" rel="noopener">ORA Policies &amp; Guidelines</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-base">
+    <div class="wrap">
+      <svg width="18" height="18" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="20" fill="#123a6b"/><path d="M30 78V22M70 78V22M30 34h40M30 50h40M30 66h40" stroke="#e9a05c" stroke-width="7" stroke-linecap="round"/></svg>
+      <span>© 2026 Morgan State University · Office of Research Administration</span>
+    </div>
+  </div>
 </footer>
 
 </body>
